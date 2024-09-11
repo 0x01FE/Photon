@@ -7,6 +7,7 @@ import time
 HOST = ''
 BROADCAST_PORT = 7500
 RECIEVE_PORT = 7501
+CLIENT_ADDR = ('127.0.0.1', BROADCAST_PORT)
 
 # Various Codes
 START_CODE = '202'
@@ -19,7 +20,7 @@ COUNTDOWN_DURATION_SECONDS = 5
 GAME_DURATION_SECONDS = 6 * 60
 
 broadcasting_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-broadcasting_socket.bind((HOST, BROADCAST_PORT))
+# broadcasting_socket.bind((HOST, BROADCAST_PORT))
 
 recieving_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 recieving_socket.bind((HOST, RECIEVE_PORT))
@@ -163,6 +164,7 @@ class PhotonServer:
 
     def end_game(self) -> None:
         self.game_started = False
+        self.countdown_started = False
         for _ in range(3):
             self.send_queue.append(END_CODE.encode())
 
@@ -228,45 +230,56 @@ class PhotonServer:
 
                 attacker = self.find_player_by_equipment_id(attacker_id)
 
-                if victim_id == GREEN_BASE and attacker_id in self.red_players:
-                    attacker.hit_enemy_base = True
-                    attacker.award_points(100)
-                    self.send_queue.append(victim_id.encode())
-                    logging.info(f'{attacker.codename} hit the enemy base! +100 points')
+                if victim_id == GREEN_BASE:
+                    if attacker_id in self.red_players:
+                        attacker.hit_enemy_base = True
+                        attacker.award_points(100)
+                        self.send_queue.append(victim_id.encode())
+                        logging.info(f'{attacker.codename} hit the enemy base! +100 points')
+                    else:
+                        logging.info(f'{attacker.codename} cannot hit their own base. Throwing away message.')
+                        continue
 
-                elif victim_id == RED_BASE and attacker_id in self.green_players:
-                    attacker.hit_enemy_base = True
-                    attacker.award_points(100)
-                    self.send_queue.append(victim_id.encode())
-                    logging.info(f'{attacker.codename} hit the enemy base! +100 points')
+                elif victim_id == RED_BASE:
+                    if attacker_id in self.green_players:
+                        attacker.hit_enemy_base = True
+                        attacker.award_points(100)
+                        self.send_queue.append(victim_id.encode())
+                        logging.info(f'{attacker.codename} hit the enemy base! +100 points')
+                    else:
+                        logging.info(f'{attacker.codename} cannot hit their own base. Throwing away message.')
+                        continue
 
                 else:
                     if (victim_id in self.red_players and attacker_id in self.red_players) or (victim_id in self.green_players and attacker_id in self.green_players):
                         attacker.award_points(-10)
-                        self.send_queue.append(victim_id.encode())
+                        self.send_queue.append(attacker_id.encode())
                         logging.info(f'{attacker.codename} hit a friendly! -10 points')
                     else:
                         attacker.award_points(10)
-                        self.send_queue.append(attacker_id.encode())
+                        self.send_queue.append(victim_id.encode())
                         logging.info(f'{attacker.codename} hit a hostile! +10 points')
 
                 self.print_scores()
                 logging.debug(f'Data Recieved: "{data}"')
 
         # Send any messages in queue
-        for sock in w_sockets:
-            if sock == broadcasting_socket and send_queue:
-                message: bytes = send_queue.pop()
+        if self.send_queue:
+            logging.debug(f'Send Queue: {self.send_queue}')
+            message: bytes = self.send_queue.pop()
 
-                # Try to send message
-                try:
-                    broadcasting_socket.send(message)
+            # Try to send message
+            try:
+                logging.debug(f'Attempting to send message {message}.')
+                broadcasting_socket.sendto(message, CLIENT_ADDR)
+                logging.info(f'Message "{message}" sent.')
 
-                # If it didn't send put it back in the queue
-                except Exception as e:
-                    logging.error(f'{e}')
-                    logging.error(f'Message: "{message}"')
-                    send_queue.append(message)
+            # If it didn't send put it back in the queue
+            except Exception as e:
+                logging.error(f'{e}')
+                logging.error(f'Message: "{message}"')
+                self.send_queue.append(message)
+
 
 # Code for Debugging
 
