@@ -1,0 +1,55 @@
+body {
+    background-color: black;
+}
+.form-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+.titleContainer {
+    color: white;
+    text-align: center;
+}
+
+/* Each group of inputs */
+.group-container {
+    background-color: #f0f0f0; /* Default background color */
+    padding: 8px;
+    border-radius: 8px;
+    /* flex: 1; */
+    justify-content: center;
+    align-items: center;
+    max-width: fit-content;
+    margin-right: 20px;
+}
+
+/* Last group margin-right should be 0 */
+/* .group-container:last-child {
+    margin-right: 0;
+} */
+
+/* Flexbox container for each player input group */
+.player-input {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+/* Player name takes up more space */
+.player-name {
+    max-width: 200px;
+    margin-right: 15px;
+}
+
+/* Player ID is smaller */
+.player-id {
+    flex: 1;
+    max-width: 70px;
+}
+label {
+    margin-right: 10px;
+}
+
+html {
+    font-family: 'Courier New', Courier, monospace;
+}
