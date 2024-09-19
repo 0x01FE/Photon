@@ -1,0 +1,16 @@
+html,
+body {
+    background-color: black;
+    height: 100%;
+    margin: 0;
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: center;
+}
+
+img {
+    width: 70rem;
+    max-width: 100%; /* Ensure image does not overflow */
+    height: auto;
+    /* object-fit: cover; */
+}
