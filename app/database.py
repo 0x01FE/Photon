@@ -1,16 +1,19 @@
-import psycopg2
+import psycopg
 
-DATABASE = ""
+DATABASE_NAME = "photon"
 HOST = "127.0.0.1"
-USER = ""
+USER = "student"
 PORT = 5432
 
-conn: psycopg2.connection = psycopg2.connect(database=DATABASE,
-                        host=HOST,
-                        user=USER,
-                        port=PORT)
+conn: psycopg.connection = psycopg.connect(f"postgresql://student@localhost/photon")
 
 cur = conn.cursor()
+
+cur.execute("SELECT * FROM players;")
+
+out = cur.fetchall()
+
+print(out)
 
 
 
