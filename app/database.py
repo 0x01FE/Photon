@@ -5,7 +5,7 @@ USERNAME = "student"
 
 CONNECTION_STRING = f"dbname={DATABASE_NAME} username={USERNAME}"
 
-def get_player_by_id(player_id: int) -> tuple | None:
+def get_player_by_id(player_id: int):
     with psycopg.connect(CONNECTION_STRING) as conn:
         cur = conn.cursor()
 
@@ -13,7 +13,7 @@ def get_player_by_id(player_id: int) -> tuple | None:
 
         return cur.fetchall()
 
-def get_player_by_codename(codename: str) -> tuple | None:
+def get_player_by_codename(codename: str):
     with psycopg.connect(CONNECTION_STRING) as conn:
         cur = conn.cursor()
 
