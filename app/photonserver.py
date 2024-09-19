@@ -4,6 +4,8 @@ import socket
 import select
 import time
 
+import database
+
 HOST = ''
 BROADCAST_PORT = 7500
 RECIEVE_PORT = 7501
@@ -111,6 +113,16 @@ class PhotonServer:
         if equipment_id == RED_BASE or equipment_id == GREEN_BASE or equipment_id in self.red_players or equipment_id in self.green_players:
             logging.error('Equipment ID is already reserved.')
             return False
+        
+        db_codename = database.get_player_by_id(player_id)
+
+        if db_codename:
+            codename = db_codename[1]
+        elif not codename:
+            logging.error('Player has no codename in database. Please provide a codename.')
+            return False
+        else:
+            database.add_codename(player_id, codename)
 
         new_player = Player(player_id, equipment_id, codename=codename)
 
@@ -283,10 +295,10 @@ class PhotonServer:
 
 # Code for Debugging
 
-# s = PhotonServer()
-# s.add_player(1, 1, 'R', 'John Photon')
-# s.add_player(2, 2, 'G', 'Jimmy Neutron')
-# s.start_game()
-# while True:
-#     s.update()
+s = PhotonServer()
+s.add_player(1, 1, 'R', 'John Photon')
+s.add_player(2, 2, 'G', 'Jimmy Neutron')
+s.start_game()
+while True:
+    s.update()
 
