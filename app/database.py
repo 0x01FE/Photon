@@ -1,19 +1,27 @@
 import psycopg
 
 DATABASE_NAME = "photon"
-HOST = "127.0.0.1"
-USER = "student"
-PORT = 5432
+USERNAME = "student"
 
-conn: psycopg.connection = psycopg.connect(f"postgresql://student@localhost/photon")
+CONNECTION_STRING = f"dbname={DATABASE_NAME} username={USERNAME}"
 
-cur = conn.cursor()
+def get_player_by_id(player_id: int) -> tuple | None:
+    with psycopg.connect(CONNECTION_STRING) as conn:
+        cur = conn.cursor()
 
-cur.execute("SELECT * FROM players;")
+        cur.execute("SELECT * FROM players WHERE id = ?", player_id)
 
-out = cur.fetchall()
+        return cur.fetchall()
 
-print(out)
+def get_player_by_codename(codename: str) -> tuple | None:
+    with psycopg.connect(CONNECTION_STRING) as conn:
+        cur = conn.cursor()
+
+        cur.execute("SELECT * FROM players WHERE codename = ?", codename)
+
+        return cur.fetchall()
+
+print(get_player_by_codename('John'))
 
 
 
