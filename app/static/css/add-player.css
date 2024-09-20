@@ -23,16 +23,18 @@ body {
     margin-right: 20px;
 }
 
-/* Last group margin-right should be 0 */
-/* .group-container:last-child {
-    margin-right: 0;
-} */
+.icon {
+    font-size: 18px;
+    opacity: 0; /* Initially hidden */
+    transition: opacity 0.3s ease;
+}
 
 /* Flexbox container for each player input group */
 .player-input {
     display: flex;
     align-items: center;
     margin-bottom: 5px;
+    margin-left: 10px;
 }
 
 /* Player name takes up more space */
