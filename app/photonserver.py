@@ -1,4 +1,3 @@
-from typing import Literal
 import logging
 import socket
 import select
@@ -47,14 +46,14 @@ class Player:
     hit_enemy_base = False
     codename: str
 
-    def __init__(self, id_: int, equipment_id: int, codename: str | None = None):
+    def __init__(self, id_: int, equipment_id: int, codename: str):
         self.id_ = id_
         self.equipment_id = equipment_id
 
         if codename:
             self.codename = codename
 
-    def award_points(self, points: int | None = 10) -> None:
+    def award_points(self, points: int = 10):
         self.score += points
 
 """
@@ -102,7 +101,7 @@ class PhotonServer:
 
     The method will return True if the player is successfully added.
     """
-    def add_player(self, player_id: int | str, equipment_id: int | str, team: Literal['R', 'G'], codename: str | None = None) -> bool:
+    def add_player(self, player_id: int, equipment_id: int, team: str, codename: str) -> bool:
 
         if type(player_id) == int:
             player_id = str(player_id)
@@ -113,7 +112,7 @@ class PhotonServer:
         if equipment_id == RED_BASE or equipment_id == GREEN_BASE or equipment_id in self.red_players or equipment_id in self.green_players:
             logging.error('Equipment ID is already reserved.')
             return False
-        
+
         db_codename = database.get_player_by_id(player_id)
 
         if db_codename:
@@ -159,7 +158,7 @@ class PhotonServer:
         self.green_players = {}
 
     # Crazy code here I know.
-    def find_player_by_equipment_id(self, equipment_id: str) -> Player | None:
+    def find_player_by_equipment_id(self, equipment_id: str) -> Player:
         if equipment_id in self.green_players:
             return self.green_players[equipment_id]
 
@@ -192,7 +191,7 @@ class PhotonServer:
             logging.info('Game Ended.')
 
     # This is for debugging
-    def print_scores(self) -> None:
+    def print_scores(self):
         print('Red Team:')
         for key in self.red_players:
             p = self.red_players[key]
@@ -213,7 +212,7 @@ class PhotonServer:
             else:
                 print()
 
-    def update(self) -> None:
+    def update(self):
         r_sockets, w_sockets, e_sockets = select.select(read_sockets, write_sockets, [])
 
         if self.countdown_started:
