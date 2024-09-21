@@ -12,26 +12,28 @@
         <div class="form-container">
             <div class="group-container" style="background-color: #ae1a00">
                 <h2 style="text-align: center">Red Team</h2>
-                <form id="group1-form" method="POST" action="/submit">
+                <form id="red-team-form" method="POST" action="/submit-red" onsubmit="checkEditScreenInputs(event)">
                     {% for i in range(1, 21) %}
                     <div class="player-input">
                         <span class="icon"> -> </span>
-                        <input type="text" id="player_name_{{ i }}" name="player_name_{{ i }}" class="player-name" required />
-                        <input type="number" id="player_id_{{ i }}" name="player_id_{{ i }}" class="player-id" required />
+                        <input type="text" id="player_name_{{ i }}" name="player_name_{{ i }}" class="player-name" />
+                        <input type="number" id="player_id_{{ i }}" name="player_id_{{ i }}" class="player-id" />
                     </div>
                     {% endfor %}
+                    <input type="submit" id="submit-red" value="Submit Red Team">
                 </form>
             </div>
             <div class="group-container" style="background-color: #23be00">
                 <h2 style="text-align: center">Green Team</h2>
-                <form id="group2-form" method="POST" action="/submit">
+                <form id="green-team-form" method="POST" action="/submit-green" onsubmit="checkEditScreenInputs(event)">
                     {% for i in range(1, 21) %}
                     <div class="player-input">
                         <span class="icon"> -> </span>
-                        <input type="text" id="player_name_{{ i }}" name="player_name_{{ i }}" class="player-name" required />
-                        <input type="number" id="player_id_{{ i }}" name="player_id_{{ i }}" class="player-id" required />
+                        <input type="text" id="player_name_{{ i }}" name="player_name_{{ i }}" class="player-name" />
+                        <input type="number" id="player_id_{{ i }}" name="player_id_{{ i }}" class="player-id" />
                     </div>
                     {% endfor %}
+                    <input type="submit" id="submit-green" value="Submit Green Team">
                 </form>
             </div>
         </div>
