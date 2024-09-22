@@ -47,7 +47,7 @@ def submitRedTeams():
 
     for i in range(1, 21):
         player_id = request.form.get(f"player_id_{i}")
-        equipment_id = request.form.get(f"equipment_id{i}")
+        equipment_id = request.form.get(f"equipment_id_{i}")
         player_name = request.form.get(f"player_name_{i}")
         logging.debug(f"P_ID: {player_id}, E_ID: {equipment_id}, P_NAME: {player_name}")
         if player_name and player_id and equipment_id:
