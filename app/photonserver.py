@@ -294,10 +294,10 @@ class PhotonServer:
 
 # Code for Debugging
 
-s = PhotonServer()
-s.add_player(1, 1, 'R', 'John Photon')
-s.add_player(2, 2, 'G', 'Jimmy Neutron')
-s.start_game()
-while True:
-    s.update()
+# s = PhotonServer()
+# s.add_player(1, 1, 'R', 'John Photon')
+# s.add_player(2, 2, 'G', 'Jimmy Neutron')
+# s.start_game()
+# while True:
+#     s.update()
 
