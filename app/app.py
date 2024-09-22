@@ -3,6 +3,7 @@ from celery import Celery
 import photonserver
 import database
 import threading
+import logging
 
 app = Flask(__name__)
 
@@ -16,7 +17,11 @@ def make_celery(app):
 celery = make_celery(app)
 s = photonserver.PhotonServer()
 
-# @celery.task
+FORMAT = "%(levelname)s - %(message)s"
+logging.basicConfig(level=logging.DEBUG, format=FORMAT)
+logging.getLogger('socket').setLevel(logging.ERROR)
+
+@celery.task
 def run_server():
     print('Celery Photon Server Task Started')
     while True:
@@ -42,6 +47,7 @@ def submitRedTeams():
         equipment_id = request.form.get(f"equipment_id{i}")
         player_name = request.form.get(f"player_name_{i}")
         if player_name and player_id and equipment_id:
+            logging.debug("Adding Player with s.addplayer")
             s.add_player(player_id, equipment_id, 'r', player_name)
             red_players.append({f"name_{i}": player_name, f"id_{i}": player_id})
     return "", 204
@@ -61,6 +67,5 @@ def submitGreenTeams():
 
 
 if __name__ == "__main__":
-    t1 = threading.Thread(target=run_server, daemon=True)
     app.run(debug=True)
 
