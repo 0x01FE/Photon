@@ -1,9 +1,25 @@
 from flask import Flask, request, render_template
+from celery import Celery
+import photonserver
+import database
+import threading
 
 app = Flask(__name__)
 
-RED_TEAM_PLAYERS = []
-GREEN_TEAM_PLAYERS = []
+app.config['CELERY_BROKER_URL'] = 'db+postgresql://student:student@localhost:5432/photon'
+app.config['CELERY_RESULT_BACKEND'] = 'db+postgresql://student:student@localhost:5432/photon'
+s = photonserver.PhotonServer()
+
+def make_celery(app):
+    celery = Celery(app.import_name, backend=app.config['CELERY_RESULT_BACKEND'], broker=app.config['CELERY_BROKER_URL'])
+    celery.conf.update(app.config)
+    return celery
+celery = make_celery(app)
+
+@celery.task
+def run_server():
+    while True:
+        s.update()
 
 @app.route("/")
 def index():
@@ -19,23 +35,30 @@ def addPlayer():
 
 @app.route("/submit-red", methods = ["POST"])
 def submitRedTeams() -> None:
-     for i in range(1, 21):
-        player_name = request.form.get(f"player_name_{i}")
+    red_players = []
+    for i in range(1, 21):
         player_id = request.form.get(f"player_id_{i}")
+        equipment_id = request.form.get(f"equipment_id{i}")
+        player_name = request.form.get(f"player_name_{i}")
         if player_name and player_id:
-            RED_TEAM_PLAYERS.append({f"name_{i}": player_name, f"id_{i}": player_id})
-     return "", 204
+            s.add_player(player_id, equipment_id, 'r', player_name)
+            red_players.append({f"name_{i}": player_name, f"id_{i}": player_id})
+    return "", 204
 
 
 @app.route("/submit-green", methods = ["POST"])
 def submitGreenTeams() -> None:
-     for i in range(1, 21):
-        player_name = request.form.get(f"player_name_{i}")
+    green_players = []
+    for i in range(1, 21):
         player_id = request.form.get(f"player_id_{i}")
+        equipment_id = request.form.get(f"equipment_id{i}")
+        player_name = request.form.get(f"player_name_{i}")
         if player_name and player_id:
-            GREEN_TEAM_PLAYERS.append({f"name_{i}": player_name, f"id_{i}": player_id})
-     return "", 204
+            s.add_player(player_id, equipment_id, 'r', player_name)
+            green_players.append({f"name_{i}": player_name, f"id_{i}": player_id})
+    return "", 204
 
 
 if __name__ == "__main__":
     app.run(debug=True)
+

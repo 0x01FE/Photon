@@ -5,7 +5,7 @@ import time
 
 import database
 
-HOST = ''
+HOST = 'localhost'
 BROADCAST_PORT = 7500
 RECIEVE_PORT = 7501
 CLIENT_ADDR = ('127.0.0.1', BROADCAST_PORT)
@@ -21,9 +21,11 @@ COUNTDOWN_DURATION_SECONDS = 5
 GAME_DURATION_SECONDS = 6 * 60
 
 broadcasting_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+broadcasting_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 # broadcasting_socket.bind((HOST, BROADCAST_PORT))
 
 recieving_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+recieving_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 recieving_socket.bind((HOST, RECIEVE_PORT))
 
 write_sockets = [ broadcasting_socket ]
@@ -128,7 +130,7 @@ class PhotonServer:
         # TODO : add code to check if player_id has a codename in the database
 
         if team.lower() == 'r':
-            if len(self.red_players) >= 15:
+            if len(self.red_players) >= 20:
                 logging.error('Red team is full.')
                 return False
 
@@ -136,7 +138,7 @@ class PhotonServer:
                 self.red_players[str(equipment_id)] = new_player
 
         elif team.lower() == 'g':
-            if len(self.green_players) >= 15:
+            if len(self.green_players) >= 20:
                 logging.error('Green team is full.')
                 return False
 
@@ -294,10 +296,10 @@ class PhotonServer:
 
 # Code for Debugging
 
-s = PhotonServer()
-s.add_player(1, 1, 'R', 'John Photon')
-s.add_player(2, 2, 'G', 'Jimmy Neutron')
-s.start_game()
-while True:
-    s.update()
+# s = PhotonServer()
+# s.add_player(1, 1, 'R', 'John Photon')
+# s.add_player(2, 2, 'G', 'Jimmy Neutron')
+# s.start_game()
+# while True:
+#     s.update()
 

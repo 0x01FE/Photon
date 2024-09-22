@@ -3,7 +3,7 @@ import psycopg
 DATABASE_NAME = "photon"
 USERNAME = "student"
 
-CONNECTION_STRING = f"dbname={DATABASE_NAME} username={USERNAME}"
+CONNECTION_STRING = f"dbname={DATABASE_NAME} user={USERNAME}"
 
 # Returns an empty list if nothing is found
 def get_player_by_id(player_id: int):
