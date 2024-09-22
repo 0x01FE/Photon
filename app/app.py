@@ -6,15 +6,16 @@ import threading
 
 app = Flask(__name__)
 
-app.config['CELERY_BROKER_URL'] = 'db+postgresql://student:student@localhost:5432/photon'
-app.config['CELERY_RESULT_BACKEND'] = 'db+postgresql://student:student@localhost:5432/photon'
-s = photonserver.PhotonServer()
+#app.config['CELERY_BROKER_URL'] = "sqla+postgresql://student:student@localhost:5432/photon"
+#app.config['CELERY_RESULT_BACKEND'] = "sqla+postgresql://student:student@localhost:5432/photon"
 
 def make_celery(app):
-    celery = Celery(app.import_name, backend=app.config['CELERY_RESULT_BACKEND'], broker=app.config['CELERY_BROKER_URL'])
+    celery = Celery(app.import_name, broker="sqla+postgresql://student:student@localhost:5432/photon")
     celery.conf.update(app.config)
     return celery
 celery = make_celery(app)
+s = photonserver.PhotonServer()
+
 
 @celery.task
 def run_server():
@@ -34,27 +35,27 @@ def addPlayer():
     return render_template("add-player/add-player.html")
 
 @app.route("/submit-red", methods = ["POST"])
-def submitRedTeams() -> None:
+def submitRedTeams():
     red_players = []
     for i in range(1, 21):
         player_id = request.form.get(f"player_id_{i}")
         equipment_id = request.form.get(f"equipment_id{i}")
         player_name = request.form.get(f"player_name_{i}")
-        if player_name and player_id:
+        if player_name and player_id and equipment_id:
             s.add_player(player_id, equipment_id, 'r', player_name)
             red_players.append({f"name_{i}": player_name, f"id_{i}": player_id})
     return "", 204
 
 
 @app.route("/submit-green", methods = ["POST"])
-def submitGreenTeams() -> None:
+def submitGreenTeams():
     green_players = []
     for i in range(1, 21):
         player_id = request.form.get(f"player_id_{i}")
         equipment_id = request.form.get(f"equipment_id{i}")
         player_name = request.form.get(f"player_name_{i}")
-        if player_name and player_id:
-            s.add_player(player_id, equipment_id, 'r', player_name)
+        if player_name and player_id and equipment_id:
+            s.add_player(player_id, equipment_id, 'g', player_name)
             green_players.append({f"name_{i}": player_name, f"id_{i}": player_id})
     return "", 204
 
