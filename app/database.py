@@ -29,6 +29,7 @@ def add_codename(player_id: int, codename: str):
 
         cur.execute("insert into players (id, codename) values (%s, %s);", (player_id, codename))
 
+        conn.commit()
 
 
 
