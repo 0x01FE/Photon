@@ -16,9 +16,9 @@ def make_celery(app):
 celery = make_celery(app)
 s = photonserver.PhotonServer()
 
-
-@celery.task
+# @celery.task
 def run_server():
+    print('Celery Photon Server Task Started')
     while True:
         s.update()
 
@@ -61,5 +61,6 @@ def submitGreenTeams():
 
 
 if __name__ == "__main__":
+    t1 = threading.Thread(target=run_server, daemon=True)
     app.run(debug=True)
 
