@@ -37,16 +37,22 @@ body {
     margin-left: 10px;
 }
 
-/* Player name takes up more space */
+/* Player name is too big */
 .player-name {
     max-width: 200px;
     margin-right: 15px;
 }
 
-/* Player ID is smaller */
+/* Player ID is too small */
 .player-id {
     flex: 1;
     max-width: 70px;
+}
+
+/* Equipment ID is just right */
+.equipment-id {
+    flex: 1;
+    max-width: 100px;
 }
 label {
     margin-right: 10px;

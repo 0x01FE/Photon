@@ -1,10 +1,11 @@
-from typing import Literal
 import logging
 import socket
 import select
 import time
 
-HOST = ''
+import database
+
+HOST = 'localhost'
 BROADCAST_PORT = 7500
 RECIEVE_PORT = 7501
 CLIENT_ADDR = ('127.0.0.1', BROADCAST_PORT)
@@ -20,9 +21,11 @@ COUNTDOWN_DURATION_SECONDS = 5
 GAME_DURATION_SECONDS = 6 * 60
 
 broadcasting_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+broadcasting_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 # broadcasting_socket.bind((HOST, BROADCAST_PORT))
 
 recieving_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+recieving_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 recieving_socket.bind((HOST, RECIEVE_PORT))
 
 write_sockets = [ broadcasting_socket ]
@@ -45,14 +48,14 @@ class Player:
     hit_enemy_base = False
     codename: str
 
-    def __init__(self, id_: int, equipment_id: int, codename: str | None = None):
+    def __init__(self, id_: int, equipment_id: int, codename: str):
         self.id_ = id_
         self.equipment_id = equipment_id
 
         if codename:
             self.codename = codename
 
-    def award_points(self, points: int | None = 10) -> None:
+    def award_points(self, points: int = 10):
         self.score += points
 
 """
@@ -100,7 +103,7 @@ class PhotonServer:
 
     The method will return True if the player is successfully added.
     """
-    def add_player(self, player_id: int | str, equipment_id: int | str, team: Literal['R', 'G'], codename: str | None = None) -> bool:
+    def add_player(self, player_id: int, equipment_id: int, team: str, codename: str) -> bool:
 
         if type(player_id) == int:
             player_id = str(player_id)
@@ -112,12 +115,22 @@ class PhotonServer:
             logging.error('Equipment ID is already reserved.')
             return False
 
+        db_codename = database.get_player_by_id(player_id)
+
+        if db_codename:
+            codename = db_codename[1]
+        elif not codename:
+            logging.error('Player has no codename in database. Please provide a codename.')
+            return False
+        else:
+            database.add_codename(player_id, codename)
+
         new_player = Player(player_id, equipment_id, codename=codename)
 
         # TODO : add code to check if player_id has a codename in the database
 
         if team.lower() == 'r':
-            if len(self.red_players) >= 15:
+            if len(self.red_players) >= 20:
                 logging.error('Red team is full.')
                 return False
 
@@ -125,7 +138,7 @@ class PhotonServer:
                 self.red_players[str(equipment_id)] = new_player
 
         elif team.lower() == 'g':
-            if len(self.green_players) >= 15:
+            if len(self.green_players) >= 20:
                 logging.error('Green team is full.')
                 return False
 
@@ -147,7 +160,7 @@ class PhotonServer:
         self.green_players = {}
 
     # Crazy code here I know.
-    def find_player_by_equipment_id(self, equipment_id: str) -> Player | None:
+    def find_player_by_equipment_id(self, equipment_id: str) -> Player:
         if equipment_id in self.green_players:
             return self.green_players[equipment_id]
 
@@ -180,7 +193,7 @@ class PhotonServer:
             logging.info('Game Ended.')
 
     # This is for debugging
-    def print_scores(self) -> None:
+    def print_scores(self):
         print('Red Team:')
         for key in self.red_players:
             p = self.red_players[key]
@@ -201,7 +214,7 @@ class PhotonServer:
             else:
                 print()
 
-    def update(self) -> None:
+    def update(self):
         r_sockets, w_sockets, e_sockets = select.select(read_sockets, write_sockets, [])
 
         if self.countdown_started:

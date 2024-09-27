@@ -32,6 +32,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 3000);
 });
 
+function checkEditScreenInputs(event) { 
+    const form = event.target;
+    let player_name, player_id, equipment_id;
+
+    for(let i = 1; i<= 20; i++){
+        player_name = form.querySelector(`#player_name_${i}`).value.trim();
+        player_id = form.querySelector(`#player_id_${i}`).value.trim();
+        equipment_id= form.querySelector(`#equipment_id_${i}`).value.trim();
+
+        if((player_name === "" && player_id === "" && equipment_id === "") || (player_name !== "" && player_id !== "" && equipment_id !== "")) {
+            return;
+        }
+        else if (player_name == "" || player_id === "" || equipment_id === "") {
+            alert('Please fill out all fields');
+            event.preventDefault();
+            return;
+        }
+    }
+};
+
+
 // document.addEventListener('DOMContentLoaded', () => {
 //     document.querySelector('button').addEventListener('click', () => {
 //         window.location.href = '/editMode';
