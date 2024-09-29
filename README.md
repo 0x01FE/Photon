@@ -36,7 +36,6 @@ python3 -m pip install -r requirements.txt
    2. In this terminal run the command `python3 -m pip install -r requirements.txt`, this should install all library and dependencies needed to run the app
    3. Navigate back to the file manager once downloads are complete
 2. Back in location of the project go into the app folder, in the folder open a new terminal like before (or you can cd from the previous location to app)  
-   1. In this terminal you first need to run the celery worker, to do so run this command `python3 -m celery -A app.celery worker --loglevel='INFO'`
-   2. Now open a new terminal in the same file location and run `python3 app.py`
-   3. Once the app is running it will show a url you can ctrl click into or you can just go to `http://127.0.0.1:5000`
+   1. Now run `python3 app.py`
+   3. Once the app is running it will show a url you can ctrl + click into or you can just go to `http://127.0.0.1:5000`
 3. Now you are in the app, clicking the edit teams button will allow you to change the teams and submit them by using the submit button on the bottom

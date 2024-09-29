@@ -1,9 +1,5 @@
 Flask==2.2.3
 Flask-WTF==1.2.1
 Werkzeug==2.3.7
-Flask-Celery==2.4.3
-celery==5.2.0
-redius==5.0.8
-SQLAlchemy==2.0.35
 psycopg[binary,pool]
 psycopg2-binary==2.9.9
