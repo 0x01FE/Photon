@@ -62,7 +62,7 @@ def submitGreenTeams():
     green_players = []
     for i in range(1, 21):
         player_id = request.form.get(f"player_id_{i}")
-        equipment_id = request.form.get(f"equipment_id{i}")
+        equipment_id = request.form.get(f"equipment_id_{i}")
         player_name = request.form.get(f"player_name_{i}")
         if player_name and player_id and equipment_id:
             s.add_player(player_id, equipment_id, 'g', player_name)
