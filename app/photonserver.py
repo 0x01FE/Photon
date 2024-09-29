@@ -115,7 +115,12 @@ class PhotonServer:
             logging.error('Equipment ID is already reserved.')
             return False
 
-        db_codename = database.get_player_by_id(player_id)
+        db_codename = None
+
+        try:
+            db_codename = database.get_player_by_id(player_id)
+        except:
+            logging.error("Couldn't connect to database.")
 
         if db_codename:
             codename = db_codename[1]
@@ -123,7 +128,10 @@ class PhotonServer:
             logging.error('Player has no codename in database. Please provide a codename.')
             return False
         else:
-            database.add_codename(player_id, codename)
+            try:
+                database.add_codename(player_id, codename)
+            except:
+                logging.error("Couldn't Connect to database.")
 
         new_player = Player(player_id, equipment_id, codename=codename)
 

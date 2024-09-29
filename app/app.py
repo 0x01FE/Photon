@@ -1,26 +1,34 @@
 from flask import Flask, request, render_template
-from celery import Celery
+# from celery import Celery
 import photonserver
 import database
 import threading
+import logging
 
 app = Flask(__name__)
 
 #app.config['CELERY_BROKER_URL'] = "sqla+postgresql://student:student@localhost:5432/photon"
 #app.config['CELERY_RESULT_BACKEND'] = "sqla+postgresql://student:student@localhost:5432/photon"
 
-def make_celery(app):
-    celery = Celery(app.import_name, broker="sqla+postgresql://student:student@localhost:5432/photon")
-    celery.conf.update(app.config)
-    return celery
-celery = make_celery(app)
+# def make_celery(app):
+#     celery = Celery(app.import_name, broker="sqla+postgresql://student:student@localhost:5432/photon")
+#     celery.conf.update(app.config)
+#     return celery
+# celery = make_celery(app)
 s = photonserver.PhotonServer()
 
+FORMAT = "%(levelname)s - %(message)s"
+logging.basicConfig(level=logging.DEBUG, format=FORMAT)
+logging.getLogger('socket').setLevel(logging.ERROR)
 
-@celery.task
+
 def run_server():
+    logging.info('Photon Server Task Started')
     while True:
         s.update()
+
+t = threading.Thread(target=run_server)
+t.start()
 
 @app.route("/")
 def index():
@@ -37,11 +45,16 @@ def addPlayer():
 @app.route("/submit-red", methods = ["POST"])
 def submitRedTeams():
     red_players = []
+    print('hello')
+    logging.debug('debug hello')
+
     for i in range(1, 21):
         player_id = request.form.get(f"player_id_{i}")
         equipment_id = request.form.get(f"equipment_id_{i}")
         player_name = request.form.get(f"player_name_{i}")
+        logging.debug(f"P_ID: {player_id}, E_ID: {equipment_id}, P_NAME: {player_name}")
         if player_name and player_id and equipment_id:
+            logging.debug("Adding Player with s.addplayer")
             s.add_player(player_id, equipment_id, 'r', player_name)
             red_players.append({f"name_{i}": player_name, f"id_{i}": player_id})
     return "", 204
@@ -52,7 +65,7 @@ def submitGreenTeams():
     green_players = []
     for i in range(1, 21):
         player_id = request.form.get(f"player_id_{i}")
-        equipment_id = request.form.get(f"equipment_id_{i}")
+        equipment_id = request.form.get(f"equipment_id{i}")
         player_name = request.form.get(f"player_name_{i}")
         if player_name and player_id and equipment_id:
             s.add_player(player_id, equipment_id, 'g', player_name)
