@@ -12,6 +12,11 @@
         <div class="form-container">
             <div class="group-container" style="background-color: #ae1a00">
                 <h2 style="text-align: center">Red Team</h2>
+                <div class="column-names">
+                    <label>Player Name</label>
+                    <label>Player ID</label>
+                    <label>Equipment ID</label>
+                </div>
                 <form id="red-team-form" method="POST" action="/submit-red" onsubmit="checkEditScreenInputs(event)">
                     {% for i in range(1, 21) %}
                     <div class="player-input">
@@ -26,6 +31,11 @@
             </div>
             <div class="group-container" style="background-color: #23be00">
                 <h2 style="text-align: center">Green Team</h2>
+                <div class="column-names">
+                    <label>Player Name</label>
+                    <label>Player ID</label>
+                    <label>Equipment ID</label>
+                </div>
                 <form id="green-team-form" method="POST" action="/submit-green" onsubmit="checkEditScreenInputs(event)">
                     {% for i in range(1, 21) %}
                     <div class="player-input">

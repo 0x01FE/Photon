@@ -54,6 +54,28 @@ body {
     flex: 1;
     max-width: 100px;
 }
+
+.column-names {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.column-names label {
+    width: 200px;
+    text-align: center;
+    margin-right: 15px;
+}
+
+.column-names label:nth-child(2) {
+    width: 70px;
+}
+
+.column-names label:nth-child(3) {
+    width: 100px;
+}
+
 label {
     margin-right: 10px;
 }

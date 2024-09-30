@@ -1,5 +1,4 @@
 from flask import Flask, request, render_template
-# from celery import Celery
 import photonserver
 import database
 import threading
@@ -7,14 +6,6 @@ import logging
 
 app = Flask(__name__)
 
-#app.config['CELERY_BROKER_URL'] = "sqla+postgresql://student:student@localhost:5432/photon"
-#app.config['CELERY_RESULT_BACKEND'] = "sqla+postgresql://student:student@localhost:5432/photon"
-
-# def make_celery(app):
-#     celery = Celery(app.import_name, broker="sqla+postgresql://student:student@localhost:5432/photon")
-#     celery.conf.update(app.config)
-#     return celery
-# celery = make_celery(app)
 s = photonserver.PhotonServer()
 
 FORMAT = "%(levelname)s - %(message)s"
@@ -45,9 +36,6 @@ def addPlayer():
 @app.route("/submit-red", methods = ["POST"])
 def submitRedTeams():
     red_players = []
-    print('hello')
-    logging.debug('debug hello')
-
     for i in range(1, 21):
         player_id = request.form.get(f"player_id_{i}")
         equipment_id = request.form.get(f"equipment_id_{i}")
@@ -65,7 +53,7 @@ def submitGreenTeams():
     green_players = []
     for i in range(1, 21):
         player_id = request.form.get(f"player_id_{i}")
-        equipment_id = request.form.get(f"equipment_id{i}")
+        equipment_id = request.form.get(f"equipment_id_{i}")
         player_name = request.form.get(f"player_name_{i}")
         if player_name and player_id and equipment_id:
             s.add_player(player_id, equipment_id, 'g', player_name)
