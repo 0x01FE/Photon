@@ -7,14 +7,6 @@ import logging
 
 app = Flask(__name__)
 
-#app.config['CELERY_BROKER_URL'] = "sqla+postgresql://student:student@localhost:5432/photon"
-#app.config['CELERY_RESULT_BACKEND'] = "sqla+postgresql://student:student@localhost:5432/photon"
-
-# def make_celery(app):
-#     celery = Celery(app.import_name, broker="sqla+postgresql://student:student@localhost:5432/photon")
-#     celery.conf.update(app.config)
-#     return celery
-# celery = make_celery(app)
 s = photonserver.PhotonServer()
 
 FORMAT = "%(levelname)s - %(message)s"
@@ -22,6 +14,7 @@ logging.basicConfig(level=logging.DEBUG, format=FORMAT)
 logging.getLogger('socket').setLevel(logging.ERROR)
 
 
+@celery.task
 def run_server():
     logging.info('Photon Server Task Started')
     while True:
