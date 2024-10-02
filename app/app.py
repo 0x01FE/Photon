@@ -1,7 +1,5 @@
 from flask import Flask, request, render_template
-# from celery import Celery
 import photonserver
-import database
 import threading
 import logging
 
@@ -14,7 +12,6 @@ logging.basicConfig(level=logging.DEBUG, format=FORMAT)
 logging.getLogger('socket').setLevel(logging.ERROR)
 
 
-@celery.task
 def run_server():
     logging.info('Photon Server Task Started')
     while True:
