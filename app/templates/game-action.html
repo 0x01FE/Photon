@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Game Scoreboard</title>
+        <link rel="stylesheet" href="/static/css/game-action.css" />
+        <link rel="stylesheet" href="/static/css/app-styles.css" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="team-scores">
+                <div class="team red">
+                    <h2>RED TEAM</h2>
+                    {% for redPlayer in redPlayers %}
+                    <div class="player-list">{{ redPlayer }}</div>
+                    {% endfor %}
+                </div>
+                <div class="team green">
+                    <h2>GREEN TEAM</h2>
+                    {% for greenPlayer in greenPlayers %}
+                    <div class="player-list">{{ greenPlayer }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="current-action">
+                {% for action in actions %}
+                <div class="action-alert">{{ action }}</div>
+                {% endfor %}
+            </div>
+            <div class="time-left">
+                <p>Time Remaining: timer or whatever</p>
+            </div>
+        </div>
+    </body>
+    <footer>
+        <button id="mode-button" class="op-button">
+            <p id="button1">Edit Teams</p>
+            F5
+        </button>
+    </footer>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</html>

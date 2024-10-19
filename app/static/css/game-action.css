@@ -1,16 +1,82 @@
-html,
 body {
     background-color: black;
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    display: flex;
-    align-items: center;
+    /* display: inline; */
     justify-content: center;
+    align-items: center;
+    color: white;
 }
 
-.teamsContainer {
-    display: flex;
+.team-table {
+    display: inline-flex;
     justify-content: center;
+    align-items: center;
     margin-top: 10px;
+}
+
+/* body {
+    background-color: black;
+    color: white;
+} */
+
+.container {
+    width: 70%;
+    margin: 20px;
+    border: 8px solid yellow;
+    padding: 10px;
+    height: 100%;
+    background-color: black;
+}
+
+.team-scores {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.team {
+    width: 45%;
+    padding: 10px;
+    border: 2px solid #fff;
+    text-align: center;
+}
+
+.team.red {
+    color: red;
+}
+
+.team.green {
+    color: limegreen;
+}
+.player-list {
+    /* display: inline-block; */
+    font-size: 16px;
+    color: lightblue;
+    /* background-color: midnightblue; */
+}
+
+.current-action {
+    margin-top: 20px;
+    padding: 10px;
+    border: 2px solid white;
+    height: 50%;
+    overflow-y: auto;
+    text-align: left;
+    /* display: inline-block; */
+    font-size: 16px;
+    color: lightblue;
+    background-color: midnightblue;
+}
+
+.action-alert {
+    color: white;
+    font-size: 24px;
+    display: block;
+}
+
+.time-left {
+    /* margin-top: 20px; */
+    padding: 10px;
+    border: 2px solid white;
+    text-align: right;
+    font-size: 18px;
 }

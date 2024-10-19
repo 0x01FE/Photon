@@ -18,20 +18,43 @@ def run_server():
     while True:
         s.update()
 
+
 t = threading.Thread(target=run_server)
 t.start()
 
+
 @app.route("/")
 def index():
-    return render_template("splash-screen/splash-screen.html")
+    return render_template("splash-screen.html")
+
 
 @app.route("/gameAction")
 def gameAction():
-    return render_template("game-action/game-action.html")
+    # need to return who hit who and stuff, or however we wanna do it,
+    #   just need to make list for the html to loop through and display
+    # actions = database.get_actions()
+    actions = [
+        "Scooby Doo hit Opus",
+        "Scooby Doo hit Opus",
+        "Scooby Doo hit Opus",
+        "Opus hit Scooby Doo",
+        "Opus hit the Base",
+        "Opus hit Scooby Doo",
+    ]
+    redPlayers = ["Thor", "Loki", "Odin", "Dragon"]
+    greenPlayers = ["HappyFeet", "Toothless", "Ironman", "American", "Spiderman"]
+    return render_template(
+        "game-action.html",
+        actions=actions,
+        redPlayers=redPlayers,
+        greenPlayers=greenPlayers,
+    )
+
 
 @app.route("/editMode")
 def addPlayer():
-    return render_template("add-player/add-player.html")
+    return render_template("add-player.html")
+
 
 @app.route("/submit-red", methods = ["POST"])
 def submitRedTeams():
@@ -63,4 +86,3 @@ def submitGreenTeams():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
