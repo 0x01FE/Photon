@@ -41,8 +41,13 @@ def gameAction():
         "Opus hit the Base",
         "Opus hit Scooby Doo",
     ]
-    redPlayers = ["Thor", "Loki", "Odin", "Dragon"]
-    greenPlayers = ["HappyFeet", "Toothless", "Ironman", "American", "Spiderman"]
+    
+    # redPlayers = ["Thor", "Loki", "Odin", "Dragon"]
+    # greenPlayers = ["HappyFeet", "Toothless", "Ironman", "American", "Spiderman"]
+
+    redPlayers = s.red_players;
+    greenPlayers = s.green_players;
+
     return render_template(
         "game-action.html",
         actions=actions,
@@ -64,12 +69,12 @@ def submitRedTeams():
         equipment_id = request.form.get(f"equipment_id_{i}")
         player_name = request.form.get(f"player_name_{i}")
         logging.debug(f"P_ID: {player_id}, E_ID: {equipment_id}, P_NAME: {player_name}")
+        
         if player_name and player_id and equipment_id:
             logging.debug("Adding Player with s.addplayer")
             s.add_player(player_id, equipment_id, 'r', player_name)
             red_players.append({f"name_{i}": player_name, f"id_{i}": player_id})
     return "", 204
-
 
 @app.route("/submit-green", methods = ["POST"])
 def submitGreenTeams():
@@ -78,11 +83,55 @@ def submitGreenTeams():
         player_id = request.form.get(f"player_id_{i}")
         equipment_id = request.form.get(f"equipment_id_{i}")
         player_name = request.form.get(f"player_name_{i}")
+        logging.debug(f"P_ID: {player_id}, E_ID: {equipment_id}, P_NAME: {player_name}")
+
         if player_name and player_id and equipment_id:
             s.add_player(player_id, equipment_id, 'g', player_name)
             green_players.append({f"name_{i}": player_name, f"id_{i}": player_id})
     return "", 204
 
+# @app.route("/submit-red", methods = ["POST"])
+# def submitRedTeams():
+#     red_players = []
+#     for i in range(1, 21):
+#         player_id = request.form.get(f"player_id_{i}")
+#         equipment_id = request.form.get(f"equipment_id_{i}")
+#         player_name = database.get_codename_by_id(player_id)
+
+#         logging.debug(f"P_ID: {player_id}, E_ID: {equipment_id}, P_NAME: {player_name}")
+
+
+#         if player_name and player_id and equipment_id:
+#             logging.debug("Adding Player with s.addplayer")
+#             s.add_player(player_id, equipment_id, 'r', player_name)
+#             red_players.append({f"name_{i}": player_name, f"id_{i}": player_id})
+#         else:
+#             player_name = request.form.get(f"player_name_{i}")
+#             s.add_player(player_id, equipment_id, 'r', player_name)
+#             red_players.append({f"name_{i}": player_name, f"id_{i}": player_id})
+#     return "", 204
+
+
+# @app.route("/submit-green", methods = ["POST"])
+# def submitGreenTeams():
+#     red_players = []
+#     for i in range(1, 21):
+#         player_id = request.form.get(f"player_id_{i}")
+#         equipment_id = request.form.get(f"equipment_id_{i}")
+#         player_name = database.get_codename_by_id(player_id)
+
+#         logging.debug(f"P_ID: {player_id}, E_ID: {equipment_id}, P_NAME: {player_name}")
+
+
+#         if player_name and player_id and equipment_id:
+#             logging.debug("Adding Player with s.addplayer")
+#             s.add_player(player_id, equipment_id, 'r', player_name)
+#             red_players.append({f"name_{i}": player_name, f"id_{i}": player_id})
+#         else:
+#             player_name = request.form.get(f"player_name_{i}")
+#             s.add_player(player_id, equipment_id, 'r', player_name)
+#             red_players.append({f"name_{i}": player_name, f"id_{i}": player_id})
+#     return "", 204
 
 if __name__ == "__main__":
     app.run(debug=True)

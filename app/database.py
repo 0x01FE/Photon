@@ -17,6 +17,18 @@ def get_player_by_id(player_id: int):
             return data[0]
         
         return None
+    
+def get_codename_by_id(player_id: int):
+    with psycopg.connect(CONNECTION_STRING) as conn:
+        cur = conn.cursor()
+
+        cur.execute("SELECT codename FROM players WHERE id = %s", (player_id,))
+
+        data = cur.fetchall()
+        if data:
+            return data[0]
+        
+        return None
 
 # Returns an empty list if nothing is found
 def get_player_by_codename(codename: str):
