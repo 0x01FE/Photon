@@ -58,8 +58,6 @@ def addPlayer():
 @app.route("/submit-red", methods = ["POST"])
 def submitRedTeams():
     red_players = []
-    print('hello')
-    logging.debug('debug hello')
 
     for i in range(1, 21):
         player_id = request.form.get(f"player_id_{i}")
