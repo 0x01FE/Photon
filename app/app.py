@@ -30,36 +30,42 @@ def index():
 
 @app.route("/gameAction")
 def gameAction():
-    # need to return who hit who and stuff, or however we wanna do it,
-    #   just need to make list for the html to loop through and display
-    # actions = database.get_actions()
-    actions = [
-        "Scooby Doo hit Opus",
-        "Scooby Doo hit Opus",
-        "Scooby Doo hit Opus",
-        "Opus hit Scooby Doo",
-        "Opus hit the Base",
-        "Opus hit Scooby Doo",
-    ]
-    
-    # redPlayers = ["Thor", "Loki", "Odin", "Dragon"]
-    # greenPlayers = ["HappyFeet", "Toothless", "Ironman", "American", "Spiderman"]
-
     redPlayers = s.red_players;
     greenPlayers = s.green_players;
 
     return render_template(
         "game-action.html",
-        actions=actions,
+        actions=[],
         redPlayers=redPlayers,
         greenPlayers=greenPlayers,
     )
+
+    # need to return who hit who and stuff, or however we wanna do it,
+    #   just need to make list for the html to loop through and display
+    # actions = database.get_actions()
+    # actions = [
+    #     "Scooby Doo hit Opus",
+    #     "Scooby Doo hit Opus",
+    #     "Scooby Doo hit Opus",
+    #     "Opus hit Scooby Doo",
+    #     "Opus hit the Base",
+    #     "Opus hit Scooby Doo",
+    # ]
+
+    # redPlayers = ["Thor", "Loki", "Odin", "Dragon"]
+    # greenPlayers = ["HappyFeet", "Toothless", "Ironman", "American", "Spiderman"]
 
 
 @app.route("/editMode")
 def addPlayer():
     return render_template("add-player.html")
 
+@app.route("/clearTeams", methods=["POST"])
+def clearAllTeams():
+    logging.info("Clearing All Teams...")
+    s.clear_teams
+    logging.info("All Teams Cleared")
+    return "", 200
 
 @app.route("/submit-red", methods = ["POST"])
 def submitRedTeams():
@@ -90,6 +96,12 @@ def submitGreenTeams():
             green_players.append({f"name_{i}": player_name, f"id_{i}": player_id})
     return "", 204
 
+@app.route("/start-game", methods=["POST"])
+def startGame():
+    s.start_game()
+    return "", 200
+
+
 # @app.route("/submit-red", methods = ["POST"])
 # def submitRedTeams():
 #     red_players = []
@@ -109,12 +121,13 @@ def submitGreenTeams():
 #             player_name = request.form.get(f"player_name_{i}")
 #             s.add_player(player_id, equipment_id, 'r', player_name)
 #             red_players.append({f"name_{i}": player_name, f"id_{i}": player_id})
-#     return "", 204
+#     return render_template('add_player.html', red_players=red_players)
+
 
 
 # @app.route("/submit-green", methods = ["POST"])
 # def submitGreenTeams():
-#     red_players = []
+#     green_players = []
 #     for i in range(1, 21):
 #         player_id = request.form.get(f"player_id_{i}")
 #         equipment_id = request.form.get(f"equipment_id_{i}")
@@ -125,13 +138,13 @@ def submitGreenTeams():
 
 #         if player_name and player_id and equipment_id:
 #             logging.debug("Adding Player with s.addplayer")
-#             s.add_player(player_id, equipment_id, 'r', player_name)
-#             red_players.append({f"name_{i}": player_name, f"id_{i}": player_id})
+#             s.add_player(player_id, equipment_id, 'g', player_name)
+#             green_players.append({f"name_{i}": player_name, f"id_{i}": player_id})
 #         else:
 #             player_name = request.form.get(f"player_name_{i}")
-#             s.add_player(player_id, equipment_id, 'r', player_name)
-#             red_players.append({f"name_{i}": player_name, f"id_{i}": player_id})
-#     return "", 204
+#             s.add_player(player_id, equipment_id, 'g', player_name)
+#             green_players.append({f"name_{i}": player_name, f"id_{i}": player_id})
+#     return render_template('add_player.html', green_players=green_players)
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -21,9 +21,9 @@
                     {% for i in range(1, 21) %}
                     <div class="player-input">
                         <span class="icon">-></span>
-                        <input type="number" id="player_id_{{ i }}" name="player_id_{{ i }}" class="player-id" />
-                        <input type="text" id="player_name_{{ i }}" name="player_name_{{ i }}" class="player-name" />
-                        <input type="number" id="equipment_id_{{ i }}" name="equipment_id_{{ i }}" class="equipment-id" />
+                        <input type="number" id="player_id_{{ i }}" name="player_id_{{ i }}" class="player-id" value="{{ red_players[i-1].id if red_players|length >= i else '' }}"/>
+                        <input type="text" id="player_name_{{ i }}" name="player_name_{{ i }}" class="player-name" value="{{ red_players[i-1].name if red_players|length >= i else '' }}"/>
+                        <input type="number" id="equipment_id_{{ i }}" name="equipment_id_{{ i }}" class="equipment-id" value="{{ red_players[i-1].equipment_id if red_players|length >= i else '' }}" />
                     </div>
                     {% endfor %}
                     <input type="submit" id="submit-red" value="Submit Red Team" />
@@ -40,9 +40,9 @@
                     {% for i in range(1, 21) %}
                     <div class="player-input">
                         <span class="icon"> -> </span>
-                        <input type="number" id="player_id_{{ i }}" name="player_id_{{ i }}" class="player-id" />
-                        <input type="text" id="player_name_{{ i }}" name="player_name_{{ i }}" class="player-name" />
-                        <input type="number" id="equipment_id_{{ i }}" name="equipment_id_{{ i }}" class="equipment-id" />
+                        <input type="number" id="player_id_{{ i }}" name="player_id_{{ i }}" class="player-id" value="{{ green_players[i-1].id if green_players|length >= i else '' }}"/>
+                        <input type="text" id="player_name_{{ i }}" name="player_name_{{ i }}" class="player-name" value="{{ green_players[i-1].name if green_players|length >= i else '' }}"/>
+                        <input type="number" id="equipment_id_{{ i }}" name="equipment_id_{{ i }}" class="equipment-id" value="{{ green_players[i-1].equipment_id if green_players|length >= i else '' }}" />
                     </div>
                     {% endfor %}
                     <input type="submit" id="submit-green" value="Submit Green Team" />
@@ -52,10 +52,10 @@
     </body>
     <footer>
         <button id="mode-button" class="op-button">
-            <p id="button1">Back to Main</p>
+            <p id="button1">Game Action Display</p>
             F5
         </button>
-        <button id="clear-button" class="op-button">
+        <button id="clear-button" method="POST" action="clear-players" class="op-button">
             <p style="margin-bottom: 5px" id="button2">Clear All Player Entries</p>
             F12
         </button>
