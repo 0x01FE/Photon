@@ -24,12 +24,10 @@ def get_codename_by_id(player_id: int):
 
         cur.execute("SELECT codename FROM players WHERE id = %s", (player_id,))
 
-        data = cur.fetchall()
-        if data:
-            return data[0]
+        data = cur.fetchone()
         
-        return None
-
+        return data[0] if data else None
+        
 # Returns an empty list if nothing is found
 def get_player_by_codename(codename: str):
     with psycopg.connect(CONNECTION_STRING) as conn:
