@@ -29,15 +29,15 @@
                 {% endfor %}
             </div>
             <div class="time-left">
-                <p>Time Remaining: timer or whatever</p>
+                <p id="timer">GAME START - 00:30</p>
             </div>
         </div>
     </body>
     <footer>
         <button id="mode-button" class="op-button">
-            <p id="button1">Edit Teams</p>
+            <p id="button1">Start Game</p>
             F5
         </button>
     </footer>
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='game-action.js') }}"></script>
 </html>

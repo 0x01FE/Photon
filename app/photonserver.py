@@ -17,7 +17,7 @@ GREEN_BASE = '43'
 RED_BASE = '53'
 
 # Times
-COUNTDOWN_DURATION_SECONDS = 5
+COUNTDOWN_DURATION_SECONDS = 30
 GAME_DURATION_SECONDS = 6 * 60
 
 broadcasting_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

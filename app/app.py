@@ -1,6 +1,5 @@
 from flask import Flask, request, render_template
 import photonserver
-import database
 import threading
 import logging
 
@@ -59,6 +58,7 @@ def addPlayer():
 @app.route("/submit-red", methods = ["POST"])
 def submitRedTeams():
     red_players = []
+
     for i in range(1, 21):
         player_id = request.form.get(f"player_id_{i}")
         equipment_id = request.form.get(f"equipment_id_{i}")
@@ -76,13 +76,24 @@ def submitGreenTeams():
     green_players = []
     for i in range(1, 21):
         player_id = request.form.get(f"player_id_{i}")
-        equipment_id = request.form.get(f"equipment_id_{i}")
+        equipment_id = request.form.get(f"equipment_id{i}")
         player_name = request.form.get(f"player_name_{i}")
         if player_name and player_id and equipment_id:
             s.add_player(player_id, equipment_id, 'g', player_name)
             green_players.append({f"name_{i}": player_name, f"id_{i}": player_id})
     return "", 204
 
+"""
+starts the game when hit idk
+
+pretty big chance that the server and frontend have a timer 
+that's slightly out of sync but probably not an issue right???
+"""
+@app.route("/start-game", methods=["POST"])
+def startGame():
+    s.start_game()
+
+    return "", 200
 
 if __name__ == "__main__":
     app.run(debug=True)
