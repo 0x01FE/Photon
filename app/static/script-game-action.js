@@ -1,8 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const startButton = document.getElementById('start-button');
     const modeButton = document.getElementById('mode-button');
 
+    startButton.addEventListener('click', () => {
+        startGame();
+    });
+    
     modeButton.addEventListener('click', () => {
-        window.location.href = '/editMode';
+        if (modeButton.firstElementChild.innerHTML === 'Edit Teams') {
+            toEditMode();
+        }
     });
 
     document.addEventListener('keydown', (event) => {
@@ -10,8 +17,19 @@ document.addEventListener('DOMContentLoaded', () => {
             startGame();
             event.preventDefault();
         }
+        if (event.key === 'F12'){
+            event.preventDefault();
+            if (modeButton.firstElementChild.innerHTML === 'Edit Teams') {
+                toEditMode();
+            }
+        }
     });
 });
+
+function toEditMode() {
+    document.getElementById('button1').innerHTML = 'Back to Main Screen';
+    window.location.href = '/editMode';
+}
 
 // I do _not_ like Javascript. - Jackson
 async function startGame() {
@@ -54,4 +72,3 @@ async function realStartGame() {
         clearInterval(countdownTimer);
     }
 }
-
