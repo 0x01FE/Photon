@@ -16,6 +16,11 @@ footer {
     min-height: 140px;
 }
 
+html {
+    zoom: 75%;
+    font-family: Garamond, serif;
+}
+
 p {
     display: inline-block;
 }

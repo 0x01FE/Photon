@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Game Over</title>
+        <link rel="stylesheet" href="/static/css/game-over.css" />
+        <link rel="stylesheet" href="/static/css/app-styles.css" />
+    </head>
+
+    <body>
+        <div class="team-scores">
+            <div class="team red">
+                <h2>RED TEAM</h2>
+                {% for redPlayer in redPlayers %}
+                <div class="player-list">{{ redPlayer }}</div>
+                {% endfor %}
+            </div>
+            <div class="team green">
+                <h2>GREEN TEAM</h2>
+                {% for greenPlayer in greenPlayers %}
+                <div class="player-list">{{ greenPlayer }}</div>
+                {% endfor %}
+            </div>
+        </div>
+    </body>
+
+    <footer>
+        <button id="action-button" class="op-button">
+            <p id="button1">Game Action Display</p>
+            F5
+        </button>
+        <button id="edit-button" class="op-button">
+            <p id="button1">Edit Teams</p>
+            F12
+        </button>
+    </footer>
+    <script src="{{ url_for('static', filename='script-game-over.js') }}"></script>
+</html>

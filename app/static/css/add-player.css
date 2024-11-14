@@ -13,8 +13,6 @@ body {
 .group-container {
     background-color: #f0f0f0; /* Default background color */
     padding: 10px;
-    /* border-radius: 8px; */
-    /* flex: 1; */
     justify-content: center;
     align-items: center;
     max-width: fit-content;
