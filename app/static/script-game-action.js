@@ -46,6 +46,7 @@ async function startGame() {
 
     const shortTimerEl = document.getElementById("short-timer");
     let countdownTime = 15;
+    document.getElementById("timer").innerHTML = "STARTING GAME...";
 
     let countdownTimer = setInterval(function() {
 
@@ -82,14 +83,18 @@ async function realStartGame() {
         timerEl.innerHTML = "TIME LEFT: 0" + Math.floor(countdownTime / 60) + ":" + (countdownTime % 60 < 10 ? "0" : "") + (countdownTime % 60);
         countdownTime--;
 
-        if (countdownTime < 0) {
+        if (countdownTime < -2) {
             stopTimer();
         }
+        else if (countdownTime < 0) {
+            timerEl.innerHTML = "GAME OVER";
+        }
+        
     }, 1000);
 
     function stopTimer() {
         clearInterval(countdownTimer);
-        window.location.href = "/end-game";
+        window.location.href = "/gameOver";
     }
 }
 

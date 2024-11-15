@@ -5,6 +5,17 @@ body {
     color: white;
 }
 
+img {
+    width: 70rem;
+    max-width: 60%;
+    height: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .team-table {
     display: inline-flex;
     justify-content: center;
@@ -15,6 +26,7 @@ body {
     border: yellow 4px solid;
     margin: 10px;
 }
+
 .container {
     width: 95%;
     margin: 20px;
@@ -35,34 +47,34 @@ body {
 }
 
 .team {
-    width: 50%;
+    width: 40%;
     padding: 10px;
     border: 2px solid #fff;
     text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .team.red {
-    background-color: darkred;
+    background-color: #b03623;
     color: white;
-    margin-right: 10px;
 }
 
 .team.green {
-    background-color: darkgreen;
+    background-color: #4ba133;
     color: white;
 }
+
 .player-list {
-    /* display: inline-block; */
     font-size: 16px;
     color: lightblue;
-    /* background-color: midnightblue; */
 }
 
 .current-action {
     margin-bottom: 20px;
     padding: 10px;
     border: 2px solid white;
-    height: 50%;
+    height: 40%;
     overflow-y: auto;
     text-align: left;
     align-self: center;
@@ -70,24 +82,25 @@ body {
     margin-left: auto;
     margin-right: auto;
     font-size: 16px;
-    width: 70%;
+    width: 60%;
     color: lightblue;
     background-color: midnightblue;
-    height: 300px;
 }
 
 .action-alert {
     color: white;
     font-size: 24px;
+    font-weight: 600;
     display: block;
 }
 
 .time-left {
-    padding: 10px;
+    padding: 5px;
     border: 2px solid white;
     text-align: center;
     font-size: 32px;
     font-weight: 200;
+    margin-top: 10px;
 }
 
 .pop-up {
@@ -116,8 +129,8 @@ body {
 .current-action-title {
     font-size: 36px;
     font-weight: 800;
-    margin-left: 230px;
-    color: blue;
+    margin-left: 320px;
+    color: rgb(61, 61, 254);
     text-align: left;
     margin-bottom: 10px;
 }

@@ -13,6 +13,10 @@
                 <p id="short-timer">15</p>
             </div>  
         </div>
+        <img src="/static/title.png" alt="Photon" class="title-img" />
+        <div class="time-left">
+            <p id="timer">HIT THE BUTTON OR PRESS F5 TO START NEW GAME</p>
+        </div>
         <div id="action-container" class="outsideBorder">
             <div class="container">
                 <div class="team-scores">
@@ -34,9 +38,6 @@
                     {% for action in actions %}
                     <div class="action-alert">{{ action }}</div>
                     {% endfor %}
-                </div>
-                <div class="time-left">
-                    <p id="timer"></p>
                 </div>
             </div>
         </div>

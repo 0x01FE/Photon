@@ -1,6 +1,5 @@
 body {
     background-color: black;
-    /* display: inline; */
     justify-content: center;
     align-items: center;
     color: white;
@@ -23,11 +22,11 @@ body {
 }
 
 .team.red {
-    background-color: darkred;
+    background-color: #b03623;
 }
 
 .team.green {
-    background-color: darkgreen;
+    background-color: #4ba133;
 }
 .player-list {
     /* display: inline-block; */

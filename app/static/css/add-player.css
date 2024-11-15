@@ -11,7 +11,7 @@ body {
 
 /* Each group of inputs */
 .group-container {
-    background-color: #f0f0f0; /* Default background color */
+    background-color: #f0f0f0;
     padding: 10px;
     justify-content: center;
     align-items: center;
@@ -21,7 +21,7 @@ body {
 
 .icon {
     font-size: 18px;
-    opacity: 0; /* Initially hidden */
+    opacity: 0;
     transition: opacity 0.3s ease;
     font-weight: bold;
 }
@@ -123,7 +123,3 @@ input {
     font-weight: bold;
     padding: 2px;
 }
-
-/* button[type='submit'] {
-    justify-content: right;
-} */
