@@ -74,7 +74,9 @@ img {
     margin-bottom: 20px;
     padding: 10px;
     border: 2px solid white;
-    height: 40%;
+    min-height: 180px;
+    max-height: 40%;
+    width: 60%;
     overflow-y: auto;
     text-align: left;
     align-self: center;
@@ -82,7 +84,6 @@ img {
     margin-left: auto;
     margin-right: auto;
     font-size: 16px;
-    width: 60%;
     color: lightblue;
     background-color: midnightblue;
 }
