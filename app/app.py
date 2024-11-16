@@ -30,9 +30,16 @@ t.start()
 def index():
     return render_template("splash-screen.html")
 
-
 @app.route("/gameAction")
 def gameAction():
+    # actions = [
+    #     "Scooby Doo hit Opus",
+    #     "Scooby Doo hit Opus",
+    #     "Scooby Doo hit Opus",
+    #     "Opus hit Scooby Doo",
+    #     "Opus hit the Base",
+    #     "Opus hit Scooby Doo",
+    # ]
     redPlayers = [player.codename for _, player in s.red_players.items()]
     greenPlayers = [player.codename for _, player in s.green_players.items()]
 
@@ -43,22 +50,15 @@ def gameAction():
         greenPlayers=greenPlayers,
     )
 
-    # need to return who hit who and stuff, or however we wanna do it,
-    #   just need to make list for the html to loop through and display
-    # actions = database.get_actions()
-    # actions = [
-    #     "Scooby Doo hit Opus",
-    #     "Scooby Doo hit Opus",
-    #     "Scooby Doo hit Opus",
-    #     "Opus hit Scooby Doo",
-    #     "Opus hit the Base",
-    #     "Opus hit Scooby Doo",
-    # ]
-
-
 @app.route("/editMode")
 def addPlayer():
     return render_template("add-player.html")
+
+@app.route("/gameOver")
+def gameOver():
+    # redPlayers= ['player1', 'player2', 'player3', 'player4', 'player5', 'player6', 'player7', 'player8', 'player9', 'player10']
+    # greenPlayers= ['player1', 'player2', 'player3', 'player4', 'player5', 'player6', 'player7', 'player8', 'player9', 'player10']
+    return render_template("game-over.html", redPlayers=[], greenPlayers=[])
 
 @app.route("/clearTeams", methods=["POST"])
 def clearAllTeams():
@@ -98,9 +98,8 @@ def submitRedTeams():
             if player_name and player_id and equipment_id:
                 s.add_player(player_id, equipment_id, 'r', player_name)
                 red_players.append({"name": player_name, "id": player_id, "equipment_id": equipment_id})
-    
-    return render_template('add-player.html', green_players=green_players, red_players=red_players)
 
+    return render_template('add-player.html', green_players=green_players, red_players=red_players)
 
 
 @app.route("/submit-green", methods = ["POST"])

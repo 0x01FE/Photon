@@ -1,0 +1,36 @@
+body {
+    background-color: black;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.team-scores {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    width: 100%;
+}
+
+.team {
+    width: 45%;
+    padding: 10px;
+    border: 2px solid #fff;
+    text-align: center;
+    height: 100%;
+    font-size: 36px;
+}
+
+.team.red {
+    background-color: #b03623;
+}
+
+.team.green {
+    background-color: #4ba133;
+}
+.player-list {
+    /* display: inline-block; */
+    font-size: 24px;
+    padding: 10px;
+    color: white;
+}

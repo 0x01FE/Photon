@@ -8,28 +8,37 @@
         <link rel="stylesheet" href="/static/css/app-styles.css" />
     </head>
     <body>
-        <div class="container">
-            <div class="team-scores">
-                <div class="team red">
-                    <h2>RED TEAM</h2>
-                    {% for redPlayer in redPlayers %}
-                    <div class="player-list">{{ redPlayer }}</div>
+        <div id="pop-up" class="pop-up">
+            <div>
+                <p id="short-timer">15</p>
+            </div>  
+        </div>
+        <img src="/static/title.png" alt="Photon" class="title-img" />
+        <div class="time-left">
+            <p id="timer">HIT THE BUTTON OR PRESS F5 TO START NEW GAME</p>
+        </div>
+        <div id="action-container" class="outsideBorder">
+            <div class="container">
+                <div class="team-scores">
+                    <div class="team red">
+                        <h2>RED TEAM</h2>
+                        {% for redPlayer in redPlayers %}
+                        <div class="player-list">{{ redPlayer }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="team green">
+                        <h2>GREEN TEAM</h2>
+                        {% for greenPlayer in greenPlayers %}
+                        <div class="player-list">{{ greenPlayer }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="current-action-title">CURRENT GAME</div>
+                <div class="current-action">
+                    {% for action in actions %}
+                    <div class="action-alert">{{ action }}</div>
                     {% endfor %}
                 </div>
-                <div class="team green">
-                    <h2>GREEN TEAM</h2>
-                    {% for greenPlayer in greenPlayers %}
-                    <div class="player-list">{{ greenPlayer }}</div>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="current-action">
-                {% for action in actions %}
-                <div class="action-alert">{{ action }}</div>
-                {% endfor %}
-            </div>
-            <div class="time-left">
-                <p id="timer">GAME START - 00:30</p>
             </div>
         </div>
     </body>
