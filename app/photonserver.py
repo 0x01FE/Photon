@@ -80,6 +80,7 @@ class PhotonServer:
     game_start_time: float
 
     send_queue: list[bytes]
+    event_list: list[str]
 
     # Key is equipment id as a string
     red_players: dict[str, Player]
@@ -87,6 +88,7 @@ class PhotonServer:
 
     def __init__(self):
         self.send_queue = []
+        self.event_list = []
 
         self.red_players = {}
         self.green_players = {}
@@ -196,9 +198,11 @@ class PhotonServer:
             self.game_started = True
             self.send_queue.append(START_CODE.encode())
             logging.info('Game Started.')
+            self.event_list.append('Game started.')
         elif current_time - self.game_start_time >= GAME_DURATION_SECONDS and self.game_started:
             self.end_game()
             logging.info('Game Ended.')
+            self.event_list.append('Game ended.')
 
     # This is for debugging
     def print_scores(self):
@@ -257,6 +261,7 @@ class PhotonServer:
                         attacker.award_points(100)
                         self.send_queue.append(victim_id.encode())
                         logging.info(f'{attacker.codename} hit the enemy base! +100 points')
+                        self.event_list.append(f'{attacker.codename} hit the enemy base!)')
                     else:
                         logging.info(f'{attacker.codename} cannot hit their own base. Throwing away message.')
                         continue
@@ -267,6 +272,7 @@ class PhotonServer:
                         attacker.award_points(100)
                         self.send_queue.append(victim_id.encode())
                         logging.info(f'{attacker.codename} hit the enemy base! +100 points')
+                        self.event_list.append(f'{attacker.codename} hit the enemy base!)')
                     else:
                         logging.info(f'{attacker.codename} cannot hit their own base. Throwing away message.')
                         continue
@@ -276,10 +282,13 @@ class PhotonServer:
                         attacker.award_points(-10)
                         self.send_queue.append(attacker_id.encode())
                         logging.info(f'{attacker.codename} hit a friendly! -10 points')
+                        self.event_list.append(f'{attacker.codename} hit a friendly!')
                     else:
+                        victim = self.find_player_by_equipment_id(victim_id)
                         attacker.award_points(10)
                         self.send_queue.append(victim_id.encode())
                         logging.info(f'{attacker.codename} hit a hostile! +10 points')
+                        self.event_list.append(f'{attacker.codename} hit {victim.codename}')
 
                 self.print_scores()
                 logging.debug(f'Data Recieved: "{data}"')
