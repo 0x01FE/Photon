@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const actionButton = document.getElementById('action-button');
-    const editButton = document.getElementById('clear-button');
+    const editButton = document.getElementById('edit-button');
 
     actionButton.addEventListener('click', () => {
         toGameAction();

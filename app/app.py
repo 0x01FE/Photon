@@ -52,7 +52,7 @@ def gameAction():
 
 @app.route("/editMode")
 def addPlayer():
-    return render_template("add-player.html")
+    return render_template("add-player.html", green_players=green_players, red_players=red_players)
 
 @app.route("/gameOver")
 def gameOver():
@@ -63,7 +63,7 @@ def gameOver():
 @app.route("/clearTeams", methods=["POST"])
 def clearAllTeams():
     logging.info("Clearing All Teams...")
-    s.clear_teams
+    s.clear_teams()
     red_players.clear()
     green_players.clear()
     logging.info("All Teams Cleared")
@@ -76,6 +76,9 @@ def startGame():
 
 @app.route("/submit-red", methods = ["POST"])
 def submitRedTeams():
+    red_players.clear()
+    s.clear_red_team()
+
     for i in range(1, 21):
         player_id = request.form.get(f"player_id_{i}")
         if(player_id == ""):
@@ -104,6 +107,9 @@ def submitRedTeams():
 
 @app.route("/submit-green", methods = ["POST"])
 def submitGreenTeams():
+    green_players.clear()
+    s.clear_green_team()
+
     for i in range(1, 21):
         player_id = request.form.get(f"player_id_{i}")
         if(player_id == ""):

@@ -167,6 +167,12 @@ class PhotonServer:
         self.red_players = {}
         self.green_players = {}
 
+    def clear_green_team(self) -> None:
+        self.green_players = {}
+
+    def clear_red_team(self) -> None:
+        self.red_players = {}    
+
     # Crazy code here I know.
     def find_player_by_equipment_id(self, equipment_id: str) -> Player:
         if equipment_id in self.green_players:
