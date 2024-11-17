@@ -2,6 +2,8 @@ import logging
 import socket
 import select
 import time
+from flask_socketio import SocketIO, emit
+import socketio
 
 import database
 
@@ -33,6 +35,9 @@ read_sockets = [ recieving_socket ]
 
 send_queue = []
 end_count = 0
+
+# stio = socketio.Client()
+# stio.connect("http:127.0.0.1.5000")
 
 FORMAT = "%(levelname)s - %(message)s"
 logging.basicConfig(level=logging.DEBUG, format=FORMAT)
@@ -75,24 +80,30 @@ if code 43 is received, the green base has been scored. If the player is on the 
 """
 class PhotonServer:
 
+    stio = socketio.Client
+
     countdown_started: bool
     game_started: bool
     game_start_time: float
 
     send_queue: list[bytes]
+    event_list: list[str]
 
     # Key is equipment id as a string
     red_players: dict[str, Player]
     green_players: dict[str, Player]
 
-    def __init__(self):
+    def __init__(self, app):
         self.send_queue = []
+        self.event_list = []
 
         self.red_players = {}
         self.green_players = {}
 
         self.countdown_started = False
         self.game_started = False
+
+        self.stio = SocketIO(app)
 
     """
     To add a player you need:
@@ -202,9 +213,11 @@ class PhotonServer:
             self.game_started = True
             self.send_queue.append(START_CODE.encode())
             logging.info('Game Started.')
+            self.event_list.append('Game started.')
         elif current_time - self.game_start_time >= GAME_DURATION_SECONDS and self.game_started:
             self.end_game()
             logging.info('Game Ended.')
+            self.event_list.append('Game ended.')
 
     # This is for debugging
     def print_scores(self):
@@ -259,33 +272,61 @@ class PhotonServer:
 
                 if victim_id == GREEN_BASE:
                     if attacker_id in self.red_players:
+                    
                         attacker.hit_enemy_base = True
                         attacker.award_points(100)
                         self.send_queue.append(victim_id.encode())
                         logging.info(f'{attacker.codename} hit the enemy base! +100 points')
+                    
+                        action_message = f'{attacker.codename} hit the enemy base!'
+                        self.event_list.append(action_message)
+                        self.stio.emit("new_action", {"action": action_message})
+                        logging.info(f"Broadcasting action: {action_message}")
+                    
                     else:
                         logging.info(f'{attacker.codename} cannot hit their own base. Throwing away message.')
                         continue
 
                 elif victim_id == RED_BASE:
                     if attacker_id in self.green_players:
+                    
                         attacker.hit_enemy_base = True
                         attacker.award_points(100)
                         self.send_queue.append(victim_id.encode())
                         logging.info(f'{attacker.codename} hit the enemy base! +100 points')
+
+                        action_message = f'{attacker.codename} hit the enemy base!'
+                        self.event_list.append(action_message)
+                        self.stio.emit("new_action", {"action": action_message})
+                        logging.info(f"Broadcasting action: {action_message}")
+                    
                     else:
                         logging.info(f'{attacker.codename} cannot hit their own base. Throwing away message.')
                         continue
 
                 else:
                     if (victim_id in self.red_players and attacker_id in self.red_players) or (victim_id in self.green_players and attacker_id in self.green_players):
+                       
                         attacker.award_points(-10)
                         self.send_queue.append(attacker_id.encode())
                         logging.info(f'{attacker.codename} hit a friendly! -10 points')
+
+                        action_message = f'{attacker.codename} hit a friendly!)'
+                        self.event_list.append(action_message)
+                        self.stio.emit("new_action", {"action": action_message})
+                        logging.info(f"Broadcasting action: {action_message}")
+
                     else:
+                        
+                        victim = self.find_player_by_equipment_id(victim_id)
                         attacker.award_points(10)
                         self.send_queue.append(victim_id.encode())
                         logging.info(f'{attacker.codename} hit a hostile! +10 points')
+
+                        action_message = f'{attacker.codename} hit {victim.codename}'
+                        self.event_list.append(action_message)
+                        self.stio.emit("new_action", {"action": action_message})
+                        logging.info(f"Broadcasting action: {action_message}")
 
                 self.print_scores()
                 logging.debug(f'Data Recieved: "{data}"')
@@ -316,4 +357,3 @@ class PhotonServer:
 # s.start_game()
 # while True:
 #     s.update()
-

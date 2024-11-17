@@ -1,15 +1,18 @@
 from flask import Flask, request, render_template
+from flask_socketio import SocketIO, emit
 import photonserver
 import database
 import threading
 import logging
 
 app = Flask(__name__)
+socketio = SocketIO(app)
 
-s = photonserver.PhotonServer()
+s = photonserver.PhotonServer(app)
 
 red_players = []
 green_players = []
+actions = []
 
 FORMAT = "%(levelname)s - %(message)s"
 logging.basicConfig(level=logging.DEBUG, format=FORMAT)
@@ -45,7 +48,6 @@ def gameAction():
 
     return render_template(
         "game-action.html",
-        actions=[],
         redPlayers=redPlayers,
         greenPlayers=greenPlayers,
     )
@@ -58,7 +60,7 @@ def addPlayer():
 def gameOver():
     # redPlayers= ['player1', 'player2', 'player3', 'player4', 'player5', 'player6', 'player7', 'player8', 'player9', 'player10']
     # greenPlayers= ['player1', 'player2', 'player3', 'player4', 'player5', 'player6', 'player7', 'player8', 'player9', 'player10']
-    return render_template("game-over.html", redPlayers=[], greenPlayers=[])
+    return render_template("game-over.html", redPlayers=red_players, greenPlayers=green_players)
 
 @app.route("/clearTeams", methods=["POST"])
 def clearAllTeams():
@@ -136,5 +138,11 @@ def submitGreenTeams():
     return render_template('add-player.html', green_players=green_players, red_players=red_players)
 
 
+@socketio.on("connect")
+def handle_connect():
+    print("Client connected!")
+
 if __name__ == "__main__":
     app.run(debug=True)
+    socketio.run(app, host="127.0.0.1", port=5000, debug=True)
+

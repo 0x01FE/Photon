@@ -105,3 +105,14 @@ function playMusic() {
     console.log("Playing music: Track0" + num);
     audio.play();
 }
+
+const socket = io();
+socket.on("new_action", (data) => {
+    const currentActionContainer = document.querySelector(".current-action");
+    const newAction = document.createElement("div");
+    newAction.classList.add("action-alert");
+    newAction.textContent = data.action;
+
+    currentActionContainer.appendChild(newAction);
+    currentActionContainer.scrollTop = currentActionContainer.scrollHeight;
+});
