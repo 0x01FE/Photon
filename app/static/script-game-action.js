@@ -83,7 +83,7 @@ async function realStartGame() {
         timerEl.innerHTML = "TIME LEFT: 0" + Math.floor(countdownTime / 60) + ":" + (countdownTime % 60 < 10 ? "0" : "") + (countdownTime % 60);
         countdownTime--;
 
-        if (countdownTime < -2) {
+        if (countdownTime < -20) {
             stopTimer();
         }
         else if (countdownTime < 0) {
