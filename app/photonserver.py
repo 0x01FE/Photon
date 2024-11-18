@@ -121,7 +121,7 @@ class PhotonServer:
 
     The method will return True if the player is successfully added.
     """
-    def add_player(self, player_id: int, equipment_id: int, team: str, codename: str,) -> bool:
+    def add_player(self, player_id: int, equipment_id: int, team: str, codename: str) -> bool:
 
         if type(player_id) == int:
             player_id = str(player_id)
