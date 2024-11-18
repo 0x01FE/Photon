@@ -135,3 +135,9 @@ img {
     text-align: left;
     margin-bottom: 10px;
 }
+
+.coolB {
+    display: inline;
+    color: orange;
+    font-weight: bold;
+}
