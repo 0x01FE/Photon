@@ -130,7 +130,7 @@ socket.on("new_red_score", (data) => {
     if (scoreElement) {
         scoreElement.textContent = score;
         if (B) {
-            scoreElement.innerHTML += `<div class="coolB">B</div>`
+            scoreElement.innerHTML += `<div class="coolB"> B</div>`
         }
     } else {
         console.error(`No score element found for player ID: ${player_name}`);
@@ -152,7 +152,7 @@ socket.on("new_green_score", (data) => {
     if (scoreElement) {
         scoreElement.textContent = score;
         if (B) {
-            scoreElement.innerHTML += `<div class="coolB">B</div>`
+            scoreElement.innerHTML += `<div class="coolB"> B</div>`
         }
     } else {
         console.error(`No score element found for player ID: ${player_name}`);
