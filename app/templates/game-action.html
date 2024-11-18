@@ -21,13 +21,13 @@
         <div id="action-container" class="outsideBorder">
             <div class="container">
                 <div class="team-scores">
-                    <div class="team red">
+                    <div class="team red" id="team-red">
                         <h2>RED TEAM</h2>
                         {% for redPlayer in redPlayers %}
                         <div class="player-list">{{ redPlayer }}</div>
                         {% endfor %}
                     </div>
-                    <div class="team green">
+                    <div class="team green" id="team-green">
                         <h2>GREEN TEAM</h2>
                         {% for greenPlayer in greenPlayers %}
                         <div class="player-list">{{ greenPlayer }}</div>
@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 <div class="current-action-title">CURRENT GAME</div>
-                <div class="current-action">
+                <div class="current-action" id="action-screen">
                     {% for action in actions %}
                     <div class="action-alert">{{ action }}</div>
                     {% endfor %}

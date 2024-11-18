@@ -348,6 +348,30 @@ class PhotonServer:
                 logging.error(f'Message: "{message}"')
                 self.send_queue.append(message)
 
+    def get_green(self) -> list[str]:
+        player_list = []
+
+        for player_id in self.green_players:
+            player = self.green_players[player_id]
+
+            player_list.append(f'{player.codename} {"<div class=\"HitBase\">B</div>" if player.hit_enemy_base else ''}')
+
+        return player_list
+    
+    def get_red(self) -> list[str]:
+        player_list = []
+
+        for player_id in self.red_players:
+            player = self.red_players[player_id]
+
+            player_list.append(f'{player.codename} {"<div class=\"HitBase\">B</div>" if player.hit_enemy_base else ''}')
+
+        return player_list
+
+
+
+
+
 
 # Code for Debugging
 

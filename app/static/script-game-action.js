@@ -75,9 +75,38 @@ async function startGame() {
     }
 }
 
+async function gameUpdate() {
+    const greenTeam = document.getElementById("team-green");
+    const redTeam = document.getElementById("team-red");
+    const actionScreen = document.getElementById("action-screen");
+
+    let response = await fetch("/game/updates/", {
+        method : "GET",
+    });
+
+    let j = await response.json();
+
+    greenTeam.innerHTML = "<h2>GREEN TEAM</h2>"
+    for (const p in j.green) {
+        greenTeam.innerHTML += `<div class="player-list">${p}</div>`;
+    }
+
+    redTeam.innerHTML = "<h2>RED TEAM</h2>";
+    for (const p in j.red) {
+        redTeam.innerHTML += `<div class="player-list">${p}</div>`;
+    }
+
+    actionScreen.innerHTML = "";
+    for (const e in j.events) {
+        actionScreen.innerHTML += `<div class="action-alert">${e}</div>`;
+    }
+}
+
 async function realStartGame() {
     const timerEl = document.getElementById("timer");
     let countdownTime = 6 * 60;
+
+    setInterval(gameUpdate, 1000);
 
     let countdownTimer = setInterval(function () {
         timerEl.innerHTML = "TIME LEFT: 0" + Math.floor(countdownTime / 60) + ":" + (countdownTime % 60 < 10 ? "0" : "") + (countdownTime % 60);
@@ -106,13 +135,13 @@ function playMusic() {
     audio.play();
 }
 
-const socket = io();
-socket.on("new_action", (data) => {
-    const currentActionContainer = document.querySelector(".current-action");
-    const newAction = document.createElement("div");
-    newAction.classList.add("action-alert");
-    newAction.textContent = data.action;
+// const socket = io();
+// socket.on("new_action", (data) => {
+//     const currentActionContainer = document.querySelector(".current-action");
+//     const newAction = document.createElement("div");
+//     newAction.classList.add("action-alert");
+//     newAction.textContent = data.action;
 
-    currentActionContainer.appendChild(newAction);
-    currentActionContainer.scrollTop = currentActionContainer.scrollHeight;
-});
+//     currentActionContainer.appendChild(newAction);
+//     currentActionContainer.scrollTop = currentActionContainer.scrollHeight;
+// });

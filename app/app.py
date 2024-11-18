@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
 from flask_socketio import SocketIO, emit
 import photonserver
 import database
@@ -136,6 +136,16 @@ def submitGreenTeams():
                 green_players.append({"name": player_name, "id": player_id, "equipment_id": equipment_id})
     
     return render_template('add-player.html', green_players=green_players, red_players=red_players)
+
+@app.route('/game/updates/', methods=['GET'])
+def get_game_updates():
+
+    return jsonify({
+        "red" : s.get_red(),
+        "green" : s.get_green(),
+        "events" : s.event_list
+    })
+
 
 
 @socketio.on("connect")
