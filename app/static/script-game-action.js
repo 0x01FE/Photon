@@ -113,6 +113,43 @@ socket.on("new_action", (data) => {
     newAction.classList.add("action-alert");
     newAction.textContent = data.action;
 
+    if (currentActionContainer.children.length > 5) {
+        currentActionContainer.removeChild(currentActionContainer.firstChild);
+    }
+
     currentActionContainer.appendChild(newAction);
     currentActionContainer.scrollTop = currentActionContainer.scrollHeight;
+});
+
+socket.on("new_red_score", (data) => {
+    // Expecting `data` to be an object with keys `player_id` and `score`
+    const { player_name, score } = data;
+    console.log(score);
+
+    // Find the element corresponding to the player's score
+    const scoreElement = document.getElementById(`score_${player_name}`);
+    console.log(scoreElement);
+
+    if (scoreElement) {
+        // Update the score
+        scoreElement.textContent = score;
+    } else {
+        console.error(`No score element found for player ID: ${player_name}`);
+    }
+});
+
+
+socket.on("new_green_score", (data) => {
+    // Expecting `data` to be an object with keys `player_id` and `score`
+    const { player_name, score } = data;
+
+    // Find the element corresponding to the player's score
+    const scoreElement = document.getElementById(`score_${player_name}`);
+    
+    if (scoreElement) {
+        // Update the score
+        scoreElement.textContent = score;
+    } else {
+        console.error(`No score element found for player ID: ${player_name}`);
+    }
 });

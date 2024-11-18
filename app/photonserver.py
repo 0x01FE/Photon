@@ -52,10 +52,12 @@ class Player:
     equipment_id: int
     hit_enemy_base = False
     codename: str
+    team: str
 
-    def __init__(self, id_: int, equipment_id: int, codename: str):
+    def __init__(self, id_: int, equipment_id: int, codename: str, team: str):
         self.id_ = id_
         self.equipment_id = equipment_id
+        self.team = team
 
         if codename:
             self.codename = codename
@@ -92,6 +94,8 @@ class PhotonServer:
     # Key is equipment id as a string
     red_players: dict[str, Player]
     green_players: dict[str, Player]
+    redScore: int
+    greenScore: int
 
     def __init__(self, app):
         self.send_queue = []
@@ -99,6 +103,9 @@ class PhotonServer:
 
         self.red_players = {}
         self.green_players = {}
+
+        self.redScore = 0
+        self.greenScore = 0
 
         self.countdown_started = False
         self.game_started = False
@@ -114,7 +121,7 @@ class PhotonServer:
 
     The method will return True if the player is successfully added.
     """
-    def add_player(self, player_id: int, equipment_id: int, team: str, codename: str) -> bool:
+    def add_player(self, player_id: int, equipment_id: int, team: str, codename: str,) -> bool:
 
         if type(player_id) == int:
             player_id = str(player_id)
@@ -144,9 +151,7 @@ class PhotonServer:
             except:
                 logging.error("Couldn't Connect to database.")
 
-        new_player = Player(player_id, equipment_id, codename=codename)
-
-        # TODO : add code to check if player_id has a codename in the database
+        new_player = Player(player_id, equipment_id, codename=codename, team=team)
 
         if team.lower() == 'r':
             if len(self.red_players) >= 20:
@@ -275,6 +280,7 @@ class PhotonServer:
                     
                         attacker.hit_enemy_base = True
                         attacker.award_points(100)
+                        self.greenScore = self.greenScore + 100
                         self.send_queue.append(victim_id.encode())
                         logging.info(f'{attacker.codename} hit the enemy base! +100 points')
                     
@@ -282,6 +288,11 @@ class PhotonServer:
                         self.event_list.append(action_message)
                         self.stio.emit("new_action", {"action": action_message})
                         logging.info(f"Broadcasting action: {action_message}")
+
+                        # temp_player = self.red_players[attacker_id]
+                        # player_score = temp_player.score + 100
+                        self.stio.emit("new_red_score", {"player_name": attacker.codename, "score": attacker.score})
+                        logging.info(f"Broadcasting score: {attacker.codename} : {attacker.score}")
                     
                     else:
                         logging.info(f'{attacker.codename} cannot hit their own base. Throwing away message.')
@@ -292,6 +303,7 @@ class PhotonServer:
                     
                         attacker.hit_enemy_base = True
                         attacker.award_points(100)
+                        self.redScore = self.redScore + 100
                         self.send_queue.append(victim_id.encode())
                         logging.info(f'{attacker.codename} hit the enemy base! +100 points')
 
@@ -299,6 +311,9 @@ class PhotonServer:
                         self.event_list.append(action_message)
                         self.stio.emit("new_action", {"action": action_message})
                         logging.info(f"Broadcasting action: {action_message}")
+
+                        self.stio.emit("new_green_score", {"player_name": attacker.codename, "score": attacker.score})
+                        logging.info(f"Broadcasting score: {attacker.codename} : {attacker.score}")
                     
                     else:
                         logging.info(f'{attacker.codename} cannot hit their own base. Throwing away message.')
@@ -315,6 +330,13 @@ class PhotonServer:
                         self.event_list.append(action_message)
                         self.stio.emit("new_action", {"action": action_message})
                         logging.info(f"Broadcasting action: {action_message}")
+                        
+                        if(attacker.team == 'r'):
+                            self.stio.emit("new_red_score", {"player_name": attacker.codename, "score": attacker.score})
+                            logging.info(f"Broadcasting score: {attacker.codename} : {attacker.score}")
+                        else:
+                            self.stio.emit("new_green_score", {"player_name": attacker.codename, "score": attacker.score})
+                            logging.info(f"Broadcasting score: {attacker.codename} : {attacker.score}")
 
                     else:
                         
@@ -327,6 +349,13 @@ class PhotonServer:
                         self.event_list.append(action_message)
                         self.stio.emit("new_action", {"action": action_message})
                         logging.info(f"Broadcasting action: {action_message}")
+
+                        if(attacker.team == 'r'):
+                            self.stio.emit("new_red_score", {"player_name": attacker.codename, "score": attacker.score})
+                            logging.info(f"Broadcasting score: {attacker.codename} : {attacker.score}")
+                        else:
+                            self.stio.emit("new_green_score", {"player_name": attacker.codename, "score": attacker.score})
+                            logging.info(f"Broadcasting score: {attacker.codename} : {attacker.score}")
 
                 self.print_scores()
                 logging.debug(f'Data Recieved: "{data}"')

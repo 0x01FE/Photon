@@ -24,13 +24,19 @@
                     <div class="team red">
                         <h2>RED TEAM</h2>
                         {% for redPlayer in redPlayers %}
-                        <div class="player-list">{{ redPlayer }}</div>
+                        <div class="player-list" id="redPlayer">
+                            {{ redPlayer }}
+                            <span class="player-score" id="score_{{ redPlayer }}">0</span>
+                        </div>
                         {% endfor %}
                     </div>
                     <div class="team green">
                         <h2>GREEN TEAM</h2>
                         {% for greenPlayer in greenPlayers %}
-                        <div class="player-list">{{ greenPlayer }}</div>
+                        <div class="player-list" id="greenPlayer">
+                            {{ greenPlayer }}
+                            <span class="player-score" id="score_{{ greenPlayer }}">0</span>
+                        </div>
                         {% endfor %}
                     </div>
                 </div>
