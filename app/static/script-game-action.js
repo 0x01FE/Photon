@@ -122,38 +122,50 @@ socket.on("new_action", (data) => {
 });
 
 socket.on("new_red_score", (data) => {
-    const { player_name, score, total_score} = data;
+    const { player_name, score, total_score, B} = data;
 
     const scoreElement = document.getElementById(`score_${player_name}`);
     const totalscoreElement = document.getElementById("red_total_score");
 
     if (scoreElement) {
         scoreElement.textContent = score;
+        if (B) {
+            scoreElement.innerHTML += `<div class="coolB">B</div>`
+        }
     } else {
         console.error(`No score element found for player ID: ${player_name}`);
     }
     
     if(totalscoreElement){
         totalscoreElement.textContent = total_score
+        if (B) {
+            totalscoreElement.innerHTML += `<div class="coolB">B</div>`
+        }
     } else {
         console.error("No total score element found...");
     }
 });
 
 socket.on("new_green_score", (data) => {
-    const { player_name, score, total_score} = data;
+    const { player_name, score, total_score, B} = data;
 
     const scoreElement = document.getElementById(`score_${player_name}`);
     const totalscoreElement = document.getElementById("green_total_score");
     
     if (scoreElement) {
         scoreElement.textContent = score;
+        if (B) {
+            scoreElement.innerHTML += `<div class="coolB">B</div>`
+        }
     } else {
         console.error(`No score element found for player ID: ${player_name}`);
     }
 
     if(totalscoreElement){
-        totalscoreElement.textContent = total_score
+        totalscoreElement.textContent = total_score;
+        if (B) {
+            totalscoreElement.innerHTML += `<div class="coolB">B</div>`
+        }
     } else {
         console.error("No total score element found...");
     }

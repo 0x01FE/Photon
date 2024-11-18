@@ -289,7 +289,7 @@ class PhotonServer:
                         self.stio.emit("new_action", {"action": action_message})
                         logging.info(f"Broadcasting action: {action_message}")
 
-                        self.stio.emit("new_red_score", {"player_name": attacker.codename, "score": attacker.score, "total_score": self.redScore})
+                        self.stio.emit("new_red_score", {"player_name": attacker.codename, "score": attacker.score, "total_score": self.redScore, "B" : True})
                         logging.info(f"Broadcasting score: {attacker.codename} : {attacker.score}")
                     
                     else:
@@ -310,7 +310,7 @@ class PhotonServer:
                         self.stio.emit("new_action", {"action": action_message})
                         logging.info(f"Broadcasting action: {action_message}")
 
-                        self.stio.emit("new_green_score", {"player_name": attacker.codename, "score": attacker.score, "total_score": self.greenScore})
+                        self.stio.emit("new_green_score", {"player_name": attacker.codename, "score": attacker.score, "total_score": self.greenScore, "B" : True})
                         logging.info(f"Broadcasting score: {attacker.codename} : {attacker.score}")
                     
                     else:
@@ -331,11 +331,11 @@ class PhotonServer:
                         
                         if(attacker.team == 'r'):
                             self.redScore = self.redScore - 10
-                            self.stio.emit("new_red_score", {"player_name": attacker.codename, "score": attacker.score, "total_score": self.redScore})
+                            self.stio.emit("new_red_score", {"player_name": attacker.codename, "score": attacker.score, "total_score": self.redScore, "B" : False})
                             logging.info(f"Broadcasting score: {attacker.codename} : {attacker.score}")
                         else:
                             self.greenScore = self.greenScore - 10
-                            self.stio.emit("new_green_score", {"player_name": attacker.codename, "score": attacker.score, "total_score": self.greenScore})
+                            self.stio.emit("new_green_score", {"player_name": attacker.codename, "score": attacker.score, "total_score": self.greenScore, "B" : False})
                             logging.info(f"Broadcasting score: {attacker.codename} : {attacker.score}")
 
                     else:
@@ -352,11 +352,11 @@ class PhotonServer:
 
                         if(attacker.team == 'r'):
                             self.redScore = self.redScore + 10
-                            self.stio.emit("new_red_score", {"player_name": attacker.codename, "score": attacker.score, "total_score": self.redScore})
+                            self.stio.emit("new_red_score", {"player_name": attacker.codename, "score": attacker.score, "total_score": self.redScore, "B" : False})
                             logging.info(f"Broadcasting score: {attacker.codename} : {attacker.score}")
                         else:
                             self.greenScore = self.greenScore + 10
-                            self.stio.emit("new_green_score", {"player_name": attacker.codename, "score": attacker.score, "total_score": self.greenScore})
+                            self.stio.emit("new_green_score", {"player_name": attacker.codename, "score": attacker.score, "total_score": self.greenScore, "B" : False})
                             logging.info(f"Broadcasting score: {attacker.codename} : {attacker.score}")
 
                 self.print_scores()
