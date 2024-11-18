@@ -137,10 +137,7 @@ socket.on("new_red_score", (data) => {
     }
     
     if(totalscoreElement){
-        totalscoreElement.textContent = total_score
-        if (B) {
-            totalscoreElement.innerHTML += `<div class="coolB">B</div>`
-        }
+        totalscoreElement.textContent = total_score;
     } else {
         console.error("No total score element found...");
     }
@@ -163,9 +160,6 @@ socket.on("new_green_score", (data) => {
 
     if(totalscoreElement){
         totalscoreElement.textContent = total_score;
-        if (B) {
-            totalscoreElement.innerHTML += `<div class="coolB">B</div>`
-        }
     } else {
         console.error("No total score element found...");
     }
