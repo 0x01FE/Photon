@@ -13,14 +13,28 @@
             <div class="team red">
                 <h2>RED TEAM</h2>
                 {% for redPlayer in redPlayers %}
-                <div class="player-list">{{ redPlayer }}</div>
+                <div class="player-list">
+                {{ redPlayer.codename }}
+                <span class="player-list">{{ redPlayer.score }}</span>
+                </div>
                 {% endfor %}
+                <div class="total-score">
+                    <strong>Total Score: </strong>
+                    <span>{{ totalRedScore }}</span>
+                </div>
             </div>
             <div class="team green">
                 <h2>GREEN TEAM</h2>
                 {% for greenPlayer in greenPlayers %}
-                <div class="player-list">{{ greenPlayer }}</div>
+                <div class="player-list">
+                    {{ greenPlayer.codename }}
+                    <span class="player-list">{{ greenPlayer.score }}</span>
+                </div>
                 {% endfor %}
+                <div class="total-score">
+                    <strong>Total Score: </strong>
+                    <span>{{ totalGreenScore }}</span>
+                </div>
             </div>
         </div>
     </body>

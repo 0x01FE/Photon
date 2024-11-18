@@ -105,3 +105,57 @@ function playMusic() {
     console.log("Playing music: Track0" + num);
     audio.play();
 }
+
+const socket = io();
+socket.on("new_action", (data) => {
+    const currentActionContainer = document.querySelector(".current-action");
+    const newAction = document.createElement("div");
+    newAction.classList.add("action-alert");
+    newAction.textContent = data.action;
+
+    if (currentActionContainer.children.length > 5) {
+        currentActionContainer.removeChild(currentActionContainer.firstChild);
+    }
+
+    currentActionContainer.appendChild(newAction);
+    currentActionContainer.scrollTop = currentActionContainer.scrollHeight;
+});
+
+socket.on("new_red_score", (data) => {
+    const { player_name, score, total_score} = data;
+
+    const scoreElement = document.getElementById(`score_${player_name}`);
+    const totalscoreElement = document.getElementById("red_total_score");
+
+    if (scoreElement) {
+        scoreElement.textContent = score;
+    } else {
+        console.error(`No score element found for player ID: ${player_name}`);
+    }
+    
+    if(totalscoreElement){
+        totalscoreElement.textContent = total_score
+    } else {
+        console.error("No total score element found...");
+    }
+});
+
+socket.on("new_green_score", (data) => {
+    const { player_name, score, total_score} = data;
+
+    const scoreElement = document.getElementById(`score_${player_name}`);
+    const totalscoreElement = document.getElementById("green_total_score");
+    
+    if (scoreElement) {
+        scoreElement.textContent = score;
+    } else {
+        console.error(`No score element found for player ID: ${player_name}`);
+    }
+
+    if(totalscoreElement){
+        totalscoreElement.textContent = total_score
+    } else {
+        console.error("No total score element found...");
+    }
+
+});

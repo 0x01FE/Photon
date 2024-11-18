@@ -1,15 +1,18 @@
 from flask import Flask, request, render_template
+from flask_socketio import SocketIO, emit
 import photonserver
 import database
 import threading
 import logging
 
 app = Flask(__name__)
+socketio = SocketIO(app)
 
-s = photonserver.PhotonServer()
+s = photonserver.PhotonServer(app)
 
 red_players = []
 green_players = []
+actions = []
 
 FORMAT = "%(levelname)s - %(message)s"
 logging.basicConfig(level=logging.DEBUG, format=FORMAT)
@@ -32,38 +35,31 @@ def index():
 
 @app.route("/gameAction")
 def gameAction():
-    # actions = [
-    #     "Scooby Doo hit Opus",
-    #     "Scooby Doo hit Opus",
-    #     "Scooby Doo hit Opus",
-    #     "Opus hit Scooby Doo",
-    #     "Opus hit the Base",
-    #     "Opus hit Scooby Doo",
-    # ]
     redPlayers = [player.codename for _, player in s.red_players.items()]
     greenPlayers = [player.codename for _, player in s.green_players.items()]
 
     return render_template(
         "game-action.html",
-        actions=[],
         redPlayers=redPlayers,
         greenPlayers=greenPlayers,
     )
 
 @app.route("/editMode")
 def addPlayer():
-    return render_template("add-player.html")
+    return render_template("add-player.html", green_players=green_players, red_players=red_players)
 
 @app.route("/gameOver")
 def gameOver():
-    # redPlayers= ['player1', 'player2', 'player3', 'player4', 'player5', 'player6', 'player7', 'player8', 'player9', 'player10']
-    # greenPlayers= ['player1', 'player2', 'player3', 'player4', 'player5', 'player6', 'player7', 'player8', 'player9', 'player10']
-    return render_template("game-over.html", redPlayers=[], greenPlayers=[])
+    redPlayers = [player for _, player in s.red_players.items()]
+    greenPlayers = [player for _, player in s.green_players.items()]
+    totalRedScore = s.redScore
+    totalGreenScore = s.greenScore
+    return render_template("game-over.html", redPlayers=redPlayers, greenPlayers=greenPlayers, totalRedScore=totalRedScore, totalGreenScore=totalGreenScore)
 
 @app.route("/clearTeams", methods=["POST"])
 def clearAllTeams():
     logging.info("Clearing All Teams...")
-    s.clear_teams
+    s.clear_teams()
     red_players.clear()
     green_players.clear()
     logging.info("All Teams Cleared")
@@ -76,6 +72,9 @@ def startGame():
 
 @app.route("/submit-red", methods = ["POST"])
 def submitRedTeams():
+    red_players.clear()
+    s.clear_red_team()
+
     for i in range(1, 21):
         player_id = request.form.get(f"player_id_{i}")
         if(player_id == ""):
@@ -104,6 +103,9 @@ def submitRedTeams():
 
 @app.route("/submit-green", methods = ["POST"])
 def submitGreenTeams():
+    green_players.clear()
+    s.clear_green_team()
+
     for i in range(1, 21):
         player_id = request.form.get(f"player_id_{i}")
         if(player_id == ""):
@@ -130,5 +132,11 @@ def submitGreenTeams():
     return render_template('add-player.html', green_players=green_players, red_players=red_players)
 
 
+@socketio.on("connect")
+def handle_connect():
+    print("Client connected!")
+
 if __name__ == "__main__":
     app.run(debug=True)
+    socketio.run(app, host="127.0.0.1", port=5000, debug=True)
+
