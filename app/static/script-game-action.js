@@ -122,34 +122,40 @@ socket.on("new_action", (data) => {
 });
 
 socket.on("new_red_score", (data) => {
-    // Expecting `data` to be an object with keys `player_id` and `score`
-    const { player_name, score } = data;
-    console.log(score);
+    const { player_name, score, total_score} = data;
 
-    // Find the element corresponding to the player's score
     const scoreElement = document.getElementById(`score_${player_name}`);
-    console.log(scoreElement);
+    const totalscoreElement = document.getElementById("red_total_score");
 
     if (scoreElement) {
-        // Update the score
         scoreElement.textContent = score;
     } else {
         console.error(`No score element found for player ID: ${player_name}`);
+    }
+    
+    if(totalscoreElement){
+        totalscoreElement.textContent = total_score
+    } else {
+        console.error("No total score element found...");
     }
 });
 
-
 socket.on("new_green_score", (data) => {
-    // Expecting `data` to be an object with keys `player_id` and `score`
-    const { player_name, score } = data;
+    const { player_name, score, total_score} = data;
 
-    // Find the element corresponding to the player's score
     const scoreElement = document.getElementById(`score_${player_name}`);
+    const totalscoreElement = document.getElementById("green_total_score");
     
     if (scoreElement) {
-        // Update the score
         scoreElement.textContent = score;
     } else {
         console.error(`No score element found for player ID: ${player_name}`);
     }
+
+    if(totalscoreElement){
+        totalscoreElement.textContent = total_score
+    } else {
+        console.error("No total score element found...");
+    }
+
 });
