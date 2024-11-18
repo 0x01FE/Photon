@@ -29,8 +29,20 @@ body {
     background-color: #4ba133;
 }
 .player-list {
-    /* display: inline-block; */
     font-size: 24px;
     padding: 10px;
     color: white;
+}
+
+.total-score {
+    font-size: 2rem;
+    font-weight: bold;
+    color: black;
+    margin-top: 1rem; 
+    text-align: center;
+}
+
+.total-score .score {
+    font-size: 2.5rem;
+    display: inline-block;
 }
